@@ -4,27 +4,11 @@ import * as error from "../server/error";
 import { Article, IArticle } from "./article";
 import * as _ from "lodash";
 
-/* interface any {
-    cartId: string;
-    orderId: string;
-    articleId: string;
-    quantity: number;
-    time: Date;
-} */
-/**
- * Creacion de un nuevo registro para la estadistica de carritos
- */
-export function createArticle(articles: IArticle): Promise<IArticle> {
-    console.log("createCartStats");
-
+export function migrationArticles(articles: any): Promise<IArticle> { // cambiar de any a IAricles cuando este completo el mapeo desde sheets
+    console.log("migrationArticles");
     return new Promise<IArticle>((resolve, reject) => {
-        /*_.forEach(articles,  function(a) {
-            const art = new Article();
-            art.model = a.model;
-        });*/
-        // Then save the Stat Cart
-        try { //https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/
-            //const art = new Article();
+        try { // https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/
+            // const art = new Article();
             Article.insertMany( articles );
             console.log("vamo a ver");
             resolve();
@@ -32,19 +16,32 @@ export function createArticle(articles: IArticle): Promise<IArticle> {
             reject();
             console.log("se pudrio: " + e);
          }
-        /*art.save(function (err: any) {
-            if (err) reject(err);
-            resolve(art);
-            console.log("err: " + err + " stats: " + JSON.stringify(art));
-        });*/
     });
+}
+
+export async function getArticle(data: any): Promise<IArticle[]> {
+    console.log("getArticle: " + JSON.stringify(data));
+    const query = {
+        {mpn: data.mpn};
+        {brand: data.brand};
+        {name: data.name};
+    };
+    try {
+        const article = await Article.find({  }).exec();
+        if (!article) {
+            throw error.newError(error.ERROR_NOT_FOUND, "El articulo no se encuentra");
+        }
+        return Promise.resolve(article);
+    } catch (err) {
+        return Promise.reject(err);
+    }
 }
 
 
 /**
  * Incrementa un campo del registro para la estadistica de carritos
  */
-export async function addCartStats(cart: Cart): Promise<void> {
+export async function addCartStats(cart: any): Promise<void> {
     console.log("addCartStats");
     console.log("cart: " + JSON.stringify(cart));
 
@@ -55,7 +52,7 @@ export async function addCartStats(cart: Cart): Promise<void> {
         if (!_.isNull(statsHour)) {
             console.log("save statsHour : " + statsHour);
             if (cart.articleId) {
-                statsHour.countArticles++;
+                // statsHour.countArticles++;
                 // addArticleStats(cart.articleId, cart.time);
             } else {
                 // statsHour.decrementQuantity();
@@ -66,7 +63,7 @@ export async function addCartStats(cart: Cart): Promise<void> {
             console.log("Save statsHour: " + JSON.stringify(statsHour));
         } else {
             console.log("Not save statsHour: " + statsHour);
-            createCartStats(cart);
+            // createCartStats(cart);
         }
 
         return Promise.resolve();

@@ -3,9 +3,9 @@
 import { Document, model, Schema } from "mongoose";
 
 export interface IServices extends Document {
-  name: string,
-  value: string,
-  description: string
+  name: string;
+  value: string;
+  description: string;
 }
 export interface IArticle extends Document {
   mpn: string;

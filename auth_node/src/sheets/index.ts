@@ -1,3 +1,2 @@
 "use strict";
-
-export * from "./service";
+export { startMigration } from "./service";
