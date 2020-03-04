@@ -1,6 +1,11 @@
 "use strict";
 
-import { Document, model, Schema } from "mongoose";
+import { PaginateModel, Document, model, Schema, Model } from "mongoose";
+const mongoose = require("mongoose");
+import * as mongoosePaginate from "mongoose-paginate";
+// import {mongoosePaginate} from "mongoose-paginate";
+// import * as aggregatePaginate from "mongoose-aggregate-paginate-v2";
+const aggregatePaginate  = require("mongoose-aggregate-paginate-v2");
 
 export interface IServices extends Document {
   name: string;
@@ -25,6 +30,7 @@ const ArticleSchema = new Schema({
   mpn: {
     type: String,
     trim: true,
+    unique: true,
     required: "MPN is required"
   },
   brand: {
@@ -67,8 +73,9 @@ const ArticleSchema = new Schema({
   }
 }, { collection: "article" });
 
-ArticleSchema.index({ name: 1, enabled: -1 });
-ArticleSchema.index({ name: 1, mpn: 1 });
+ArticleSchema.plugin(aggregatePaginate);
+ArticleSchema.index({ mpn: 1, name: 1 });
+// ArticleSchema.index({ name: -1, mpn: 1 });
 
 /**
  * Trigger antes de guardar
@@ -78,4 +85,4 @@ ArticleSchema.pre("save", function (this: IArticle, next) {
   next();
 });
 
-export let Article = model<IArticle>("Article", ArticleSchema);
+export let Article = mongoose.model("Article", ArticleSchema);

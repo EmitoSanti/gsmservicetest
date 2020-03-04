@@ -19,7 +19,7 @@ export function migrationArticles(articles: any): Promise<IArticle> { // cambiar
     });
 }
 
-export async function getArticle(data: any): Promise<IArticle[]> {
+/* export async function getArticle(data: any): Promise<IArticle[]> {
     console.log("getArticle: " + JSON.stringify(data));
     const query = {
         {mpn: data.mpn};
@@ -35,8 +35,66 @@ export async function getArticle(data: any): Promise<IArticle[]> {
     } catch (err) {
         return Promise.reject(err);
     }
-}
+}*/
+async function clean(object: any): Promise<any> {
+    for (const key in object) {
+        if (object[key] === null || typeof object[key] === "undefined") {
+            delete object[key];
+        } else if (typeof object[key] === "object" && typeof object[key].getMonth !== "function"
+          && !object[key].hasOwnProperty("lastIndex")) {
+            if (Object.keys(object[key]).length === 0) {
+                delete object[key];
+            } else {
+                const cleared = await clean(object[key]);
 
+                if (Object.keys(cleared).length === 0 && typeof cleared.getMonth !== "function") {
+                    delete object[key];
+                } else {
+                    object[key] = cleared;
+                }
+            }
+        }
+    }
+    console.log("object: " + JSON.stringify(object));
+    return object;
+}
+export  function getAll(filter: any): Promise<Array<any>> { // a filter hay que parcear
+    console.log("getAll: " + JSON.stringify(filter));
+    // https://github.com/aravindnc/mongoose-aggregate-paginate-v2/blob/master/tests/index.js
+    const options = {
+        page: filter.page ? filter.page : 1, // arreglar estructura del body
+        limit: filter.limit ? filter.limit : 20
+    };
+
+    const aggregate = Article.aggregate();
+    aggregate.match(filter);
+    aggregate.group({
+        _id: "$mpn",
+        name: {$last: "$name"},
+        mpn: {$last: "$mpn"},
+        brand: {$last: "$brand"},
+        services: {$last: "$services"},
+        enabled: {$last: "$enabled"}
+    });
+    aggregate.project({
+        "mpn": 1,
+        "name": 1,
+        "brand": 1,
+        "services": 1,
+        "enabled": 1
+    });
+    aggregate.sort({"mpn": 1, "name": 1}); // revisar sorting a nivel de mpn
+    console.log("aggregate: " + JSON.stringify(aggregate));
+    return new Promise((resolve, reject) => {
+        return Article.aggregatePaginate(aggregate, options, function(err: any, resp: any) {
+            if (err) {
+                return reject(err);
+            }
+            console.log("resp: " + JSON.stringify(resp));
+            return resolve([{resp: resp}]);
+        });
+    });
+}
 
 /**
  * Incrementa un campo del registro para la estadistica de carritos

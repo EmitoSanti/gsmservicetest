@@ -15,7 +15,11 @@ process.on("unhandledRejection", (reason, p) => {
 });
 
 // Establecemos conexión con MongoDD
-mongoose.connect(conf.mongoDb, {}, function (err: MongoError) {
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
+mongoose.set("useUnifiedTopology", true);
+mongoose.connect(conf.mongoDb, { useUnifiedTopology: true, useCreateIndex: true, useNewUrlParser: true, useFindAndModify: false }, function (err: MongoError) {
   if (err) {
     console.error("No se pudo conectar a MongoDB!");
     console.error(err.message);

@@ -44,7 +44,8 @@ async function art(req: ISessionRequest, res: express.Response) {
   }
 }
 function getArticle(req: ISessionRequest, res: express.Response) {
-  articles.getArticle(req.body)
+  console.log("getArticle: " + JSON.stringify(req.body));
+  articles.getAll(req.body)
     .then(art => {
       return res.json(art);
     })

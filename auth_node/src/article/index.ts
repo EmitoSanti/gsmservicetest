@@ -2,6 +2,6 @@
 
 export {
     migrationArticles,
-    getArticle
+    getAll
 } from "./service";
 

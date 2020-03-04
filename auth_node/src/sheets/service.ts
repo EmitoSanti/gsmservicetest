@@ -4,11 +4,11 @@ import * as fs from "fs";
 import * as readline from "readline";
 import * as error from "../server/error";
 import { google } from "googleapis";
-import { SCOPES, 
-  TOKEN_PATH, 
-  SPREAD_SHEET_ID, 
-  VERSION_GOOGLE_API, 
-  RANGE_EASY, 
+import { SCOPES,
+  TOKEN_PATH,
+  SPREAD_SHEET_ID,
+  VERSION_GOOGLE_API,
+  RANGE_EASY,
   RANGE_HARD } from "./constants";
 import { Article, IArticle } from "../article/article"; // utilizarlos cuando este listo el mapeo desde sheets
 import { migrationArticles } from "../article";
