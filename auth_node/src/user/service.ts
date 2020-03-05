@@ -107,6 +107,7 @@ function validateLogin(body: SignInRequest): Promise<SignInRequest> {
 }
 
 export async function findById(userId: string): Promise<IUser> {
+    console.log("findById");
     try {
         const user = await User.findOne({ _id: userId }).exec();
         if (!user) {

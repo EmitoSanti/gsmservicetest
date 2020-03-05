@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
-import { BasicFromGroupController } from '../tools/error.form';
+import { AuthService } from '../auth.service';
+import { BasicFromGroupController } from '../../tools/error.form';
 
 @Component({
-    selector: 'app-auth-login',
-    templateUrl: './login.component.html'
+    selector: 'app-auth-new-user',
+    templateUrl: './new-user.component.html',
+    styleUrls: ['./new-user.component.scss']
 })
-export class LoginComponent extends BasicFromGroupController {
+export class NewUserComponent extends BasicFromGroupController {
     form = new FormGroup({
         login: new FormControl('', [Validators.required]),
+        name: new FormControl('', [Validators.required]),
         password: new FormControl('', [Validators.required]),
     });
 
@@ -20,10 +22,12 @@ export class LoginComponent extends BasicFromGroupController {
 
     submitForm() {
         this.cleanRestValidations();
-
         // this.authService
-        //     .login(this.form.get('login').value, this.form.get('password').value)
-        //     .then(principal => {
+        //     .newUser({
+        //         name: this.form.get('name').value,
+        //         login: this.form.get('login').value,
+        //         password: this.form.get('password').value
+        //     }).then(principal => {
         //         this.router.navigate(['/']);
         //     })
         //     .catch(error => this.processRestValidations(error));

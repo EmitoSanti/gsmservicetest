@@ -8,6 +8,21 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@schematics/angular:class": {
+          "lintFix": true
+        },
+        "@schematics/angular:directive": {
+          "lintFix": true
+        },
+        "@schematics/angular:module": {
+          "lintFix": true
+        },
+        "@schematics/angular:pipe": {
+          "lintFix": true
+        },
+        "@schematics/angular:service": {
+          "lintFix": true
         }
       },
       "root": "",
@@ -106,7 +121,7 @@
               "tsconfig.app.json",
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
-            ],
+            ], 
             "exclude": [
               "**/node_modules/**"
             ]

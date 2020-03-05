@@ -1,3 +1,12 @@
+
+
+generar componente => ng generate service nombreComponente 
+Genera al carpeta con el nomnre del componente y con los archivos necesarios 
+
+generar servicio para un componente => ng generate service carpetaComponente/nombreComponente 
+
+
+
 # GsmserviceSite
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.4.

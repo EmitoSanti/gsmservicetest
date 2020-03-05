@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService, User } from '../auth/auth.service';
+import { AuthService, User } from '../auth.service';
 
 @Component({
     selector: 'app-auth-info',
-    templateUrl: './info.component.html'
+    templateUrl: './info.component.html',
+    styleUrls: ['./info.component.scss']
 })
 export class InfoComponent implements OnInit {
     token: string;

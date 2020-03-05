@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService, User } from './auth.service';
+import { AuthService, User } from '../auth.service';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { BasicFromGroupController } from '../tools/error.form';
+import { BasicFromGroupController } from '../../tools/error.form';
 
 @Component({
     selector: 'app-users',
-    templateUrl: './users.component.html'
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.scss']
 })
 export class UsersComponent extends BasicFromGroupController implements OnInit {
     users: User[];

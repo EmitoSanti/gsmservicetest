@@ -1,0 +1,30 @@
+ 
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title>Log in</mat-card-title>
+        </mat-card-header>
+        <form [formGroup]="form" class="example-form">
+            <mat-card-content>
+                <mat-form-field class="example-full-width">
+                    <label for="login">Usuario</label>
+                    <input class="form-control" [class.is-invalid]="hasError('login')" id="login" formControlName="login">
+                    <div *ngIf="hasError('login')" class="invalid-feedback">{{getErrorText('login')}}</div>
+                </mat-form-field>
+        
+                <mat-form-field class="example-full-width">
+                    <label for="password">Password</label>
+                    <input class="form-control" [class.is-invalid]="hasError('password')" id="password" formControlName="password" type="password">
+                    <div *ngIf="hasError('password')" class="invalid-feedback">{{getErrorText('password')}}</div>
+                </mat-form-field>
+            </mat-card-content>
+            <div *ngIf="errorMessage" class="invalid-feedback">{{errorMessage}}</div>
+            <button mat-stroked-button color="accent" class="btn-block" (click)="submitForm()" [disabled]="form.invalid">
+                Log in
+            </button>
+            <button mat-stroked-button color="accent" class="btn-block" routerLink="/">
+                Cancelar
+            </button>
+        </form>
+    </mat-card>
+</div>

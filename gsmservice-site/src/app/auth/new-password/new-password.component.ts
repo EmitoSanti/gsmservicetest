@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
-import { BasicFromGroupController } from '../tools/error.form';
+import { AuthService } from '../auth.service';
+import { BasicFromGroupController } from '../../tools/error.form';
 
 @Component({
     selector: 'app-auth-new-password',
-    templateUrl: './new.password.component.html'
+    templateUrl: './new-password.component.html',
+    styleUrls: ['./new-password.component.scss']
 })
 export class NewPasswordComponent extends BasicFromGroupController {
     form = new FormGroup({

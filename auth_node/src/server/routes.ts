@@ -347,8 +347,10 @@ async function getAll(req: ISessionRequest, res: express.Response) {
  * @apiUse OtherErrors
  */
 function current(req: ISessionRequest, res: express.Response) {
+  console.log("current");
   user.findById(req.user.user_id)
     .then(user => {
+      console.log("current: " + JSON.stringify(user));
       return res.json({
         id: user.id,
         name: user.name,
