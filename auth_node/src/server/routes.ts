@@ -7,8 +7,8 @@ import { Payload } from "../token";
 import * as token from "../token";
 import * as error from "../server/error";
 import * as user from "../user";
-import * as articles from "../article";
-import * as sh from "../sheets/service"; // ver esto falla index.ts creo
+import { ArticlesController } from "../articles/articles.controller";
+import { SheetsController } from "../sheets/sheet.controller"; // ver esto falla index.ts creo
 /**
  * Modulo de seguridad, login/logout, cambio de contraseñas, etc
  */
@@ -17,40 +17,26 @@ export function init(app: express.Express) {
 
   app.route("/v1/user").post(signUp);
   app.route("/v1/user/signin").post(login);
-  app.route("/v1/user/art").get(art);
-  app.route("/v1/user/getart").get(getArticle);
   app.route("/v1/user/signout").get(passport.authenticate("jwt", { session: false }), logout);
   app.route("/v1/users/:userID/grant").post(passport.authenticate("jwt", { session: false }), grantPermissions);
   app.route("/v1/users/:userID/revoke").post(passport.authenticate("jwt", { session: false }), revokePermissions);
   app.route("/v1/users/:userID/enable").post(passport.authenticate("jwt", { session: false }), enableUser);
   app.route("/v1/users/:userID/disable").post(passport.authenticate("jwt", { session: false }), disableUser);
   app.route("/v1/users").get(passport.authenticate("jwt", { session: false }), getAll);
-
   app.route("/v1/users/current").get(passport.authenticate("jwt", { session: false }), current);
+  // sheet
+  app.route("/v1/google/code/").get(SheetsController.setNewCode);
+  app.route("/v1/google/newcode/").get(SheetsController.getNewCode);
+  app.route("/v1/google/authorize").get(SheetsController.authorize);
+  app.route("/v1/google/startmigration").get(SheetsController.startMigration);
+  // aricles
+  app.route("/v1/articles/getart").get(ArticlesController.getArticle);
 }
 
 interface ISessionRequest extends express.Request {
   user: Payload;
 }
-async function art(req: ISessionRequest, res: express.Response) {
-  console.log("art");
-  try {
-    const a = req.user;
-    sh.startMigration();
-    res.send();
-  } catch (err) {
-    console.log("err: " + err);
-    error.handle(res, err);
-  }
-}
-function getArticle(req: ISessionRequest, res: express.Response) {
-  console.log("getArticle: " + JSON.stringify(req.body));
-  articles.getAll(req.body)
-    .then(art => {
-      return res.json(art);
-    })
-    .catch(err => error.handle(res, err));
-}
+
 /**
  * @api {post} /v1/user/password Cambiar Password
  * @apiName Cambiar Password

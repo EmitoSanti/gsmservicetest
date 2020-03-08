@@ -14,6 +14,7 @@
     "scripts": {
         "start": "npm run build && npm run watch",
         "build": "npm run build-ts && npm run tslint && npm run apidoc && npm run apidocmd",
+        "debug": "node --nolazy --inspect-brk=9229 dist/server.js",
         "serve": "node dist/server.js",
         "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\"  \"npm run watch-ts\" \"nodemon dist/server.js\"",
         "build-ts": "tsc",
