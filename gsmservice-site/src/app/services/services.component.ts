@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { ServicesService } from './services.service';
 
 @Component({
   selector: 'app-services',
@@ -19,13 +20,14 @@ export class ServicesComponent implements OnInit {
     'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
     'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
   ];
-  constructor() { }
+  constructor(private servicesService: ServicesService) { }
 
   control = new FormControl();
   streets: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
   filteredStreets: Observable<string[]>;
-
+  asd: any;
   ngOnInit() {
+    this.search();
     this.filteredStreets = this.control.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
@@ -39,5 +41,20 @@ export class ServicesComponent implements OnInit {
 
   private _normalizeValue(value: string): string {
     return value.toLowerCase().replace(/\s/g, '');
+  }
+
+  search() {
+    const query= {
+      brand: "nokia"
+    }
+		this.servicesService.articles(query).subscribe(
+      (response) => { // Success
+        console.log("asd: " + JSON.stringify(response[0].resp.docs,null, 2));
+				this.asd = response[0].resp.docs;
+			},
+			(error) => {
+			  console.error(error);
+			}
+		);
   }
 }

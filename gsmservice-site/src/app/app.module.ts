@@ -27,6 +27,7 @@ import { MenuComponent } from './menu/menu.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ArticlesComponent } from './articles/articles.component';
 import { ServicesComponent } from './services/services.component';
+import { ServicesService } from './services/services.service';
 
 @NgModule({
     declarations: [
@@ -55,7 +56,7 @@ import { ServicesComponent } from './services/services.component';
         ObserversModule,
         PlatformModule
     ],
-    providers: [AuthGuardService, AuthService, ArticlesService],
+    providers: [AuthGuardService, AuthService, ArticlesService, ServicesService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

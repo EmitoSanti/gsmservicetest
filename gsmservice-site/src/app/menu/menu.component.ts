@@ -53,14 +53,14 @@ export class MenuComponent implements OnInit {
 		return this.authService.usuarioLogueado;
 	}
 
-  	logout() {
+  logout() {
 		this.authService.logout().subscribe(
 			() => { // Success
 				this.router.navigate(['/']);
 			},
 			(error) => {
-			console.error(error);
+				console.error(error);
 			}
 		);
-  	}
+  }
 }
