@@ -37,7 +37,7 @@ export class SheetsController {
         return SheetsService.authorization(token);
       })
       .then((response) => {
-        res.status(200).json(response);
+        res.status(200).json("authorized");
       })
       .catch((err) => {
         const error  = {
@@ -53,9 +53,11 @@ export class SheetsController {
     console.log("startMigration");
     SheetsService.readTokenFile()
     .then((token) => {
+      console.log("token: " + token);
       return SheetsService.authorization(token);
     })
     .then((response) => {
+      console.log("response: " + JSON.stringify(response));
       SheetsService.startMigration(response);
       res.status(200);
     })
@@ -66,7 +68,7 @@ export class SheetsController {
         syscall: err.syscall
       };
       // err viene con el path del archivo que fallo si lo mando al front crea una pista para romper la seguridad de la plataforma
-      res.status(400).json(error);
+      res.status(400).json(err);
       // error.handle(res, err); usar handle??
     });
     // try {

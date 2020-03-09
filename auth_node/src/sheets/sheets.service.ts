@@ -41,7 +41,7 @@ export class SheetsService {
       this.oAuth2Client.setCredentials(JSON.parse(token)); // si hay token se puede trabajar con google // se parsea porque viene en texto plano
       console.log("oAuth2Client parse: " + JSON.stringify(this.oAuth2Client));
       // if (err) return reject(err); // ver si lo soporta en la documentacion de setCredentials
-      return resolve("authorized");
+      return resolve(this.oAuth2Client);
     });
     return promise;
   }
