@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../auth/auth.service';
 import { ArticlesService } from '../articles/articles.service';
-
+import { MatMenuTrigger } from '@angular/material/menu';
 @Component({
 	selector: 'app-menu',
 	templateUrl: './menu.component.html',
@@ -10,6 +10,7 @@ import { ArticlesService } from '../articles/articles.service';
 })
 export class MenuComponent implements OnInit {
 	title = 'GSM service';
+	@ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 	constructor(private authService: AuthService, private router: Router, private articlesService: ArticlesService) { }
 	ngOnInit(): void {
 		if (localStorage.getItem('auth_token')) {
@@ -21,6 +22,11 @@ export class MenuComponent implements OnInit {
 					console.error(error);
 				}
 			);
+		}
+	}
+	navigateMenu(tag: string) {
+		if(tag) { // despues validar se es admin para volver a validad la navegacion a users
+			this.router.navigate([`/${tag}`]);
 		}
 	}
 	cosa() {

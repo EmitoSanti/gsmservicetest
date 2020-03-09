@@ -1,0 +1,38 @@
+#services {
+  width: 100%;
+  min-height: calc(100vh - 3rem);
+  height: 100%;
+  display: flex;
+
+  .example-card {
+    min-width: 100%;
+    margin: 40px;
+  }
+  .cards {
+    width: 1000px;
+  }
+  mat-card {
+    width: 200px;
+    height: 200px;
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  mat-grid-list {
+    position: inherit;
+  }
+  mat-grid-tile {
+    background: lightblue;
+  }
+}

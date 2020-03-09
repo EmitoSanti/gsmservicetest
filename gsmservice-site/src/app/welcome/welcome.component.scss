@@ -1,6 +1,6 @@
 #welcome {
     width: 100%;
-    min-height: 100vh;
+    min-height: calc(100vh - 3rem); // fixea los 3 rem que se encajan en el host
     height: 100%;
     display: flex;
     position: relative;

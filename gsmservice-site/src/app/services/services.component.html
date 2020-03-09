@@ -1,0 +1,48 @@
+<div id="services" fxLayout="column" fxLayoutAlign="start start">
+  <h4>Servicios a moviles</h4>
+
+  <div fxLayout="row" fxLayoutAlign="space-around start" >
+    <mat-form-field>
+      <mat-label>Seleccione una marca</mat-label>
+      <mat-select [(value)]="selected">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let state of states" [value]="state">{{state}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p>You selected: {{selected}}</p>
+    
+    <form class="example-form">
+      <input type="text"
+             placeholder="Search for a street"
+             [formControl]="control"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let street of filteredStreets | async" [value]="street">
+          {{street}}
+        </mat-option>
+      </mat-autocomplete>
+    </form>
+  </div>
+  <div fxLayout="row wrap" fxflexfill fxLayoutGap="20px grid" class="cards"> 
+      <mat-card fxflex="25" *ngFor="let street of filteredStreets | async">
+        <mat-card-header>
+          <mat-card-title>{{street}}</mat-card-title>
+          <mat-card-subtitle>{{street}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            {{street}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>
+            <!-- <mat-icon>favorite</mat-icon> -->
+          </button>
+        </mat-card-actions>
+      </mat-card>
+  </div>
+  <!-- <mat-grid-list cols="1" gutterSize="1rem" rowHeight="4:1">
+    <mat-grid-tile>1</mat-grid-tile>
+    <mat-grid-tile>2</mat-grid-tile>
+  </mat-grid-list> -->
+</div>

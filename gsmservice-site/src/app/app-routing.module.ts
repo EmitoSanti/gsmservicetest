@@ -7,6 +7,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { NewUserComponent } from './auth/new-user/new-user.component';
 import { NewPasswordComponent } from './auth/new-password/new-password.component';
 import { UsersComponent } from './auth/users/users.component';
+import { ServicesComponent } from './services/services.component';
 
 const routes: Routes = [
     // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
     { path: 'password', component: NewPasswordComponent, canActivate: [AuthGuardService] },
     { path: 'registrarse', component: NewUserComponent },
     { path: 'users', component: UsersComponent, canActivate: [AuthGuardService] },
+    { path: 'services', component: ServicesComponent, canActivate: [AuthGuardService] },
     // { path: '**', component: PageNotFoundComponent }
 ];
 

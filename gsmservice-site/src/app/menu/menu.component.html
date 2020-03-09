@@ -3,25 +3,28 @@
 		<button mat-button color="primary">
 			<a routerLink="/"><span>{{ title }}</span></a>
 		</button>
-		<button mat-button color="primary">
-			<a routerLink="/password">Servicios</a> <!-- buscador de servicios-->
-		</button>
-		<button mat-button color="primary">
-			<a routerLink="/info">Info</a>
-		</button>
-		<button mat-button color="primary">
-			<a routerLink="/password">Password</a>
-		</button>
-		<button mat-button color="primary">
-			<a routerLink="/users">Usuarios</a> <!-- Solo acceso a los admins-->
-		</button>
-		<button mat-button color="black">
-			<span>Perfil </span> <!--menu desplegable  debe agrupar "info y password"-->
-		</button>
-		<button mat-button>
-			<a routerLink="" (click)="logout()">Logout</a>
-		</button>
+		<div class="fix-width" fxLayout="row" fxLayoutAlign="space-around center">
+			<button mat-button color="primary">
+				<a routerLink="/services">Servicios</a> <!-- buscador de servicios-->
+			</button>
+		</div>
+		<button mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">Perfil</button>
 	</mat-toolbar>
-
+	<mat-menu #menu="matMenu">
+		<div (mouseleave)="menuTrigger.closeMenu()">
+			<button mat-menu-item (click)="navigateMenu('users')">
+				Usuarios
+			</button>
+			<button mat-menu-item (click)="navigateMenu('info')">
+				Info
+			</button>
+			<button mat-menu-item (click)="navigateMenu('password')">
+				New Password
+			</button>
+			<button mat-menu-item (click)="logout()">
+				Logout
+			</button>
+		</div>
+	</mat-menu>
 </div>
 <!-- <button (click)="cosa()">cosaa</button> -->

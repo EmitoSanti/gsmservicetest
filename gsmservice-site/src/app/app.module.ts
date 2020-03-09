@@ -26,6 +26,7 @@ import { UsersComponent } from './auth/users/users.component';
 import { MenuComponent } from './menu/menu.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ArticlesComponent } from './articles/articles.component';
+import { ServicesComponent } from './services/services.component';
 
 @NgModule({
     declarations: [
@@ -38,9 +39,11 @@ import { ArticlesComponent } from './articles/articles.component';
         InfoComponent,
         NewPasswordComponent,
         UsersComponent,
-        ArticlesComponent        
+        ArticlesComponent,
+        ServicesComponent
     ],
     imports: [
+        CustomMaterialModule,
         FlexLayoutModule,
         CommonModule,
         FormsModule,
@@ -49,7 +52,6 @@ import { ArticlesComponent } from './articles/articles.component';
         AppRoutingModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        CustomMaterialModule,
         ObserversModule,
         PlatformModule
     ],
