@@ -1,11 +1,7 @@
-<div fxLayout="column" fxLayoutAlign="space-between none">
-    <!-- Toolbar -->
-    <mat-toolbar color="primary" class="app-header">
-        <span>{{ title }}</span>
-        <app-menu></app-menu> <!-- pasarlo a horizontal-->
-    </mat-toolbar>
+<div id="app">
+    <app-menu></app-menu> <!-- Toolbar -->
     <router-outlet></router-outlet> <!-- la vista que renderiza cuando se rutea-->
-    <footer>
+    <footer fxLayout="column" fxLayoutAlign="start center" *ngIf="false">
         Footer
         https://github.com/SinghDigamber/angular-material-login-template
         https://github.com/angular/flex-layout/wiki/API-Documentation

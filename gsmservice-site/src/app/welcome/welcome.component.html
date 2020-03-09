@@ -1,6 +1,18 @@
-<h2 class="titulo">GSM service</h2>
-<div *ngIf="!usuarioLogueado">
-    <h6>Sesión </h6>
-    <a routerLink="/login">Login </a>
-    <a routerLink="/registrarse">Registrarse</a>
+<div fxLayout="column" fxLayoutAlign="center center" id="welcome">
+    <mat-card fxLayout="column" fxLayoutAlign="center center">
+        <mat-card-header fxLayout="column" fxLayoutAlign="center center">
+            <mat-card-title>GSM service</mat-card-title>
+            <mat-card-subtitle>Buscador </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <!-- Noticias que mande los admins ... hay que hacer back end y front end ... lo hacemos tambien con google sheets? -->
+            <!-- Y hacer un nuevo tab que el admin pueda bloquear/desbloquear desde la web algunos articulos filtrados por brand mpn y modelo 
+                es decir que bloque todos los de una marca o modelo o un mpn especifico
+            -->
+        </mat-card-content>
+        <mat-card-actions *ngIf="!usuarioLogueado" fxLayout="row" fxLayoutAlign="center center">
+            <button mat-stroked-button color="accent" routerLink="/login">Login </button>
+            <button mat-stroked-button color="accent" routerLink="/registrarse">Registrarse</button>
+        </mat-card-actions>
+    </mat-card>    
 </div>

@@ -8,12 +8,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { PlatformModule } from '@angular/cdk/platform';
+import { ObserversModule } from '@angular/cdk/observers';
 
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
+
+import { CustomMaterialModule } from './material.modules'
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { AuthService } from './auth/auth.service';
@@ -41,6 +41,7 @@ import { ArticlesComponent } from './articles/articles.component';
         ArticlesComponent        
     ],
     imports: [
+        FlexLayoutModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -48,11 +49,9 @@ import { ArticlesComponent } from './articles/articles.component';
         AppRoutingModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        MatToolbarModule,
-        FlexLayoutModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatButtonModule
+        CustomMaterialModule,
+        ObserversModule,
+        PlatformModule
     ],
     providers: [AuthGuardService, AuthService, ArticlesService],
     bootstrap: [AppComponent]

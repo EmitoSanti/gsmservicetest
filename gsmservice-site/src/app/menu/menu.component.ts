@@ -9,6 +9,7 @@ import { ArticlesService } from '../articles/articles.service';
 	styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
+	title = 'GSM service';
 	constructor(private authService: AuthService, private router: Router, private articlesService: ArticlesService) { }
 	ngOnInit(): void {
 		if (localStorage.getItem('auth_token')) {
