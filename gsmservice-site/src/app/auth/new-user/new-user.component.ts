@@ -22,14 +22,19 @@ export class NewUserComponent extends BasicFromGroupController {
 
     submitForm() {
         this.cleanRestValidations();
-        // this.authService
-        //     .newUser({
-        //         name: this.form.get('name').value,
-        //         login: this.form.get('login').value,
-        //         password: this.form.get('password').value
-        //     }).then(principal => {
-        //         this.router.navigate(['/']);
-        //     })
-        //     .catch(error => this.processRestValidations(error));
+        this.authService
+            .newUser({
+                name: this.form.get('name').value,
+                login: this.form.get('login').value,
+                password: this.form.get('password').value
+            })         
+            .subscribe(
+                () => { 
+                    this.router.navigate(['/']);
+                },
+                (error) => {
+                    this.processRestValidations(error);
+                }
+            );
     }
 }

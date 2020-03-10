@@ -5,28 +5,6 @@ import { Article, IArticle } from "./article"; // modelo/schema para los objetos
 import * as _ from "lodash";
 
 export class ArticlesService {
-    static async clean(object: any): Promise<any> {  // para limpiar las query ... parece que por ahora es al dope .. en los vacios que se machean devuelve null
-        for (const key in object) {
-            if (object[key] === null || typeof object[key] === "undefined") {
-                delete object[key];
-            } else if (typeof object[key] === "object" && typeof object[key].getMonth !== "function"
-              && !object[key].hasOwnProperty("lastIndex")) {
-                if (Object.keys(object[key]).length === 0) {
-                    delete object[key];
-                } else {
-                    const cleared = await this.clean(object[key]);
-                    if (Object.keys(cleared).length === 0 && typeof cleared.getMonth !== "function") {
-                        delete object[key];
-                    } else {
-                        object[key] = cleared;
-                    }
-                }
-            }
-        }
-        console.log("object: " + JSON.stringify(object));
-        return object;
-    }
-
     static getAll(filter: any): Promise<Array<any>> { // a filter hay que parcear
         console.log("getAll: " + JSON.stringify(filter));
         // https://github.com/aravindnc/mongoose-aggregate-paginate-v2/blob/master/tests/index.js
@@ -52,6 +30,37 @@ export class ArticlesService {
             "enabled": 1
         });
         aggregate.sort({"mpn": 1, "name": 1}); // revisar sorting a nivel de mpn
+        console.log("aggregate: " + JSON.stringify(aggregate));
+        return new Promise((resolve, reject) => {
+            return Article.aggregatePaginate(aggregate, options, function(err: any, resp: any) {
+                if (err) {
+                    return reject(err);
+                }
+                console.log("resp: " + JSON.stringify(resp));
+                return resolve([{resp: resp}]);
+            });
+        });
+    }
+
+    static getAllBrands(filter: any): Promise<Array<any>> { // a filter hay que parcear
+        console.log("getAllBrands: " + JSON.stringify(filter));
+        // https://github.com/aravindnc/mongoose-aggregate-paginate-v2/blob/master/tests/index.js
+        const options = {
+            page: filter.page ? filter.page : 1, // arreglar estructura del body
+            limit: filter.limit ? filter.limit : 20
+        };
+        const aggregate = Article.aggregate();
+        aggregate.match(filter);
+        aggregate.group({
+            _id: "$brand",
+            brand: {$last: "$brand"},
+            enabled: {$last: "$enabled"}
+        });
+        aggregate.project({
+            "brand": 1,
+            "enabled": 1
+        });
+        aggregate.sort({"brand": 1, "enabled": 1}); // revisar sorting a nivel de enabled
         console.log("aggregate: " + JSON.stringify(aggregate));
         return new Promise((resolve, reject) => {
             return Article.aggregatePaginate(aggregate, options, function(err: any, resp: any) {
@@ -96,4 +105,26 @@ export class ArticlesService {
     } catch (err) {
         return Promise.reject(err);
     }
+}
+
+static async clean(object: any): Promise<any> {  // para limpiar las query ... parece que por ahora es al dope .. en los vacios que se machean devuelve null
+    for (const key in object) {
+        if (object[key] === null || typeof object[key] === "undefined") {
+            delete object[key];
+        } else if (typeof object[key] === "object" && typeof object[key].getMonth !== "function"
+          && !object[key].hasOwnProperty("lastIndex")) {
+            if (Object.keys(object[key]).length === 0) {
+                delete object[key];
+            } else {
+                const cleared = await this.clean(object[key]);
+                if (Object.keys(cleared).length === 0 && typeof cleared.getMonth !== "function") {
+                    delete object[key];
+                } else {
+                    object[key] = cleared;
+                }
+            }
+        }
+    }
+    console.log("object: " + JSON.stringify(object));
+    return object;
 }*/

@@ -13,26 +13,40 @@ export class ServicesService extends RestBaseService {
         super();
     }
 
-    articles(query: any): Observable<any> {
+    getByQuery(query: any): Observable<any> {
         console.log("articles");
+        return this.http.get(this.base_url + 'articles/getart', this.getRestHeader(query))
+        .pipe(
+            tap(
+                (response: any) => {
+                    console.log("response: " + JSON.stringify(response));
+                    return response;
+                },
+                (error) => {
+                    console.log("error: " + JSON.stringify(error));
+                    this.handleError;
+                }
+            )
+        );
+        // .pipe(catchError(this.handleError)); //this.handleError.bind(this)
+    }
 
-        return this.http
-            .get(
-                this.base_url + 'articles/getart',
-                this.getRestHeader(query)
-            ).pipe(
-                tap(
-                    (response: any) => {
-                        console.log("response: " + JSON.stringify(response));
-                        return response;
-                    },
-                    (error) => {
-                        console.log("error: " + JSON.stringify(error));
-                        this.handleError;
-                    }
-                )
-            );
-            // .pipe(catchError(this.handleError)); //this.handleError.bind(this)
+    getBrands(query: any): Observable<any> {
+        console.log("articles");
+        return this.http.get(this.base_url + 'articles/getart', this.getRestHeader(query))
+        .pipe(
+            tap(
+                (response: any) => {
+                    console.log("response: " + JSON.stringify(response));
+                    return response;
+                },
+                (error) => {
+                    console.log("error: " + JSON.stringify(error));
+                    this.handleError;
+                }
+            )
+        );
+        // .pipe(catchError(this.handleError)); //this.handleError.bind(this)
     }
 }
 

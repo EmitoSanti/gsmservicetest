@@ -51,7 +51,23 @@ export class AuthService extends RestBaseService {
             newPassword: newPassword
         };
 
-        return null;
+        return this.http
+            .post<User>(
+                this.base_url + 'user/signin',
+                data,
+                this.getRestHeader()
+            ).pipe(
+                tap(
+                    (response: any) => {
+                        console.log("response: " + JSON.stringify(response));
+                        return "New Password, OK";
+                    },
+                    error => {
+                        console.log("error: " + JSON.stringify(error));
+                        this.handleError;
+                    }
+                )
+        );
     }
 
     logout() {
@@ -99,14 +115,35 @@ export class AuthService extends RestBaseService {
         }
     }
 
-    newUser(value: RegistrarUsuario): Observable<any> {
-        return null;
+    newUser(value: RegistrarUsuario): Observable<User> {
+        console.log("newUser");
+        return this.http
+            .post<User>(
+                this.base_url + 'user/signin',
+                value,
+                this.getRestHeader()
+            ).pipe(
+                tap(
+                    (response: any) => {
+                        console.log("response: " + JSON.stringify(response.token));
+                        localStorage.setItem('auth_token', response.token);
+                        console.log("localStorage: " + JSON.stringify(localStorage));
+                        return this.getPrincipal();
+                    },
+                    error => {
+                        console.log("error: " + JSON.stringify(error));
+                        localStorage.removeItem('auth_token');
+                        this.usuarioLogueado = undefined;
+                        this.handleError;
+                    }
+                )
+            );
     }
 
-    getUsers(): Observable<any> {
-        return null;
+    getUsers(): Observable<User[]> {
+        return this.http.get<User[]>(this.base_url + 'users', this.getRestHeader())
+            .pipe(catchError(this.handleError));
     }
-
 
     enable(id: string): Observable<any> {
         return null;

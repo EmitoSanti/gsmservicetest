@@ -7,34 +7,35 @@
       <mat-label>Seleccione una marca</mat-label>
       <mat-select [(value)]="selected">
         <mat-option>None</mat-option>
-        <mat-option *ngFor="let state of states" [value]="state">{{state}}</mat-option>
+        <mat-option *ngFor="let brand of brands" [value]="brand.name">{{brand.name}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <p>You selected: {{selected}}</p>
+    <p>You selected: {{selectedBrand}}</p>
     
     <form class="example-form">
       <input type="text"
              placeholder="Buscar por Modelo"
-             [formControl]="control"
+             [formControl]="controlName"
              [matAutocomplete]="automodelo">
       <mat-autocomplete #automodelo="matAutocomplete">
-        <mat-option *ngFor="let street of filteredStreets | async" [value]="street">
-          {{street}}
+        <mat-option *ngFor="let data of filteredNameSearch | async" [value]="data.name">
+          {{data.name | json}}
         </mat-option>
       </mat-autocomplete>
     </form>
     <form class="example-form">
       <input type="text"
              placeholder="Buscar por MPN"
-             [formControl]="control"
+             [formControl]="controlMPN"
              [matAutocomplete]="autompn">
       <mat-autocomplete #autompn="matAutocomplete">
-        <mat-option *ngFor="let street of filteredStreets | async" [value]="street">
-          {{street}}
+        <mat-option *ngFor="let data of filteredMPNSearch | async" [value]="data.mpn">
+          {{data.mpn}}
         </mat-option>
       </mat-autocomplete>
     </form>
   </div>
+
   <div fxLayout="row wrap" fxflexfill fxLayoutGap="20px grid" class="cards"> 
       <mat-card fxflex="25" *ngFor="let celu of asd">
         <mat-card-header>

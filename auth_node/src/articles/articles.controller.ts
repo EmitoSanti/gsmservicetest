@@ -8,11 +8,19 @@ import { ArticlesService } from "./articles.service"; // ver esto falla index.ts
 // }
 
 export class ArticlesController {
-  static getArticle(req: express.Request, res: express.Response) {
+  static getArticles(req: express.Request, res: express.Response) {
     console.log("getArticle: " + JSON.stringify(req.body));
     ArticlesService.getAll(req.body)
-      .then(art => {
-        return res.json(art);
+      .then(response => {
+        return res.json(response);
+      })
+      .catch(err => error.handle(res, err));
+  }
+  static getBrands(req: express.Request, res: express.Response) {
+    console.log("getBrands: " + JSON.stringify(req.body));
+    ArticlesService.getAllBrands(req.body)
+      .then(response => {
+        return res.json(response);
       })
       .catch(err => error.handle(res, err));
   }

@@ -10,47 +10,58 @@ import { ServicesService } from './services.service';
   styleUrls: ['./services.component.scss']
 })
 export class ServicesComponent implements OnInit {
-  selected: string;
-  states: string[] = [
-    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
-    'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
-    'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-    'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
-    'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania',
-    'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-    'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-  ];
-  constructor(private servicesService: ServicesService) { }
+  selectedBrand: string;
+  controlName = new FormControl();
+  controlMPN = new FormControl();
+  filteredNameSearch: Observable<string[]>;
+  filteredMPNSearch: Observable<string[]>;
+  dataSearch: any = [];
+  brands: any = [];
 
-  control = new FormControl();
-  streets: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
-  filteredStreets: Observable<string[]>;
-  asd: any;
+  constructor(private servicesService: ServicesService) { }
   ngOnInit() {
-    this.search();
-    this.filteredStreets = this.control.valueChanges.pipe(
+    this.getBrands();
+    this.filteredNameSearch = this.controlName.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value))
+      map(value => this._filter(value)) // selectedBrand
+    );
+    this.filteredMPNSearch = this.controlMPN.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value)) // selectedBrand
     );
   }
 
   private _filter(value: string): string[] {
     const filterValue = this._normalizeValue(value);
-    return this.streets.filter(street => this._normalizeValue(street).includes(filterValue));
+    return this.dataSearch.filter(street => this._normalizeValue(street).includes(filterValue));
   }
 
   private _normalizeValue(value: string): string {
     return value.toLowerCase().replace(/\s/g, '');
   }
 
-  search() {
-    const query= {
-      brand: "nokia"
+  getBrands() {
+    const query = {
+      enabled: true // false
     }
-		this.servicesService.articles(query).subscribe(
+		this.servicesService.getBrands(query).subscribe(
       (response) => { // Success
-        console.log("asd: " + JSON.stringify(response[0].resp.docs,null, 2));
-				this.asd = response[0].resp.docs;
+        console.log("brands: " + JSON.stringify(response[0].resp.docs,null, 2));
+				this.brands = response[0].resp.docs;
+			},
+			(error) => {
+			  console.error(error);
+			}
+		);
+  }
+  search() {
+    const query = {
+      brand: this.selectedBrand
+    }
+		this.servicesService.getByQuery(query).subscribe(
+      (response) => { // Success
+        console.log("dataSearch: " + JSON.stringify(response[0].resp.docs,null, 2));
+				this.dataSearch = response[0].resp.docs;
 			},
 			(error) => {
 			  console.error(error);
