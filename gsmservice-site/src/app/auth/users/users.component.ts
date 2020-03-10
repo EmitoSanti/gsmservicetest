@@ -34,32 +34,58 @@ export class UsersComponent extends BasicFromGroupController implements OnInit {
         this.editPermisos = undefined;
     }
     grantPermisos() {
-        // this.authService.grant(this.editPermisos.id, this.form.get('permisos').value.split(','))
-        //     .then(
-        //         result => this.getUsers()
-        //     ).catch(err => this.processRestValidations(err));
+        this.authService.grant(this.editPermisos.id, this.form.get('permisos').value.split(','))
+            .subscribe(
+                (response) => {
+                    this.getUsers();
+                },
+                (error) => {
+                    this.processRestValidations(error);
+                }
+            );
     }
     revokePermisos() {
-        // this.authService.revoke(this.editPermisos.id, this.form.get('permisos').value.split(','))
-        //     .then(
-        //         result => this.getUsers()
-        //     ).catch(err => this.processRestValidations(err));
+        this.authService.revoke(this.editPermisos.id, this.form.get('permisos').value.split(','))
+            .subscribe(
+                (response) => {
+                    this.getUsers();
+                },
+                (error) => {
+                    this.processRestValidations(error);
+                }
+            );
     }
     enableUser(id: string) {
-        // this.authService.enable(id).then(
-        //     result => this.getUsers()
-        // ).catch(err => this.processRestValidations(err));
+        this.authService.enable(id)
+            .subscribe(
+                (response) => {
+                    this.getUsers();
+                },
+                (error) => {
+                    this.processRestValidations(error);
+                }
+            );
     }
-
     disableUser(id: string) {
-        // this.authService.disable(id).then(
-        //     result => this.getUsers()
-        // ).catch(err => this.processRestValidations(err));
+        this.authService.disable(id)
+            .subscribe(
+                (response) => {
+                    this.getUsers();
+                },
+                (error) => {
+                    this.processRestValidations(error);
+                }
+            );
     }
-
     getUsers() {
-        // this.authService.getUsers().then(
-        //     result => this.users = result
-        // ).catch(err => this.processRestValidations(err));
+        this.authService.getUsers()
+            .subscribe(
+                (response) => {
+                    this.users = response;
+                },
+                (error) => {
+                    this.processRestValidations(error);
+                }
+            );
     }
 }

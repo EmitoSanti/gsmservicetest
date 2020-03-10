@@ -43,13 +43,18 @@ export class NewPasswordComponent extends BasicFromGroupController {
     submitForm() {
         this.cleanRestValidations();
 
-        // this.authService
-        //     .changePassword(
-        //         this.form.get('currentPassword').value,
-        //         this.form.get('newPassword').value
-        //     ).then(principal => {
-        //         this.router.navigate(['/']);
-        //     })
-        //     .catch(error => this.processRestValidations(error));
+        this.authService
+            .changePassword(
+                this.form.get('currentPassword').value,
+                this.form.get('newPassword').value
+            )
+            .subscribe(
+                () => { 
+                    this.router.navigate(['/']);
+                },
+                (error) => {
+                    this.processRestValidations(error);
+                }
+            );
     }
 }

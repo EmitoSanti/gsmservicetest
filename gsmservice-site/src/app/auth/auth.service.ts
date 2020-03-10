@@ -146,19 +146,29 @@ export class AuthService extends RestBaseService {
     }
 
     enable(id: string): Observable<any> {
-        return null;
+        return this.http
+            .post(this.base_url + 'users/' + id + '/enable', {}, this.getRestHeader())
+            .pipe(catchError(this.handleError));
     }
 
     disable(id: string): Observable<any> {
-        return null;
+        return this.http
+            .post(this.base_url + 'users/' + id + '/disable', {}, this.getRestHeader())
+            .pipe(catchError(this.handleError));
     }
 
     grant(id: string, permisos: string[]): Observable<any> {
-        return null;
+        const data = {'permissions': permisos};
+        return this.http
+            .post(this.base_url + 'users/' + id + '/grant', data, this.getRestHeader())
+            .pipe(catchError(this.handleError));
     }
 
     revoke(id: string, permisos: string[]): Observable<any> {
-        return null;
+        const data = {'permissions': permisos};
+        return this.http
+            .post(this.base_url + 'users/' + id + '/revoke', data, this.getRestHeader())
+            .pipe(catchError(this.handleError));
     }
 }
 
