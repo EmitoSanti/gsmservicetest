@@ -30,8 +30,8 @@ export function init(app: express.Express) {
   app.route("/v1/google/authorize").get(SheetsController.authorize);
   app.route("/v1/google/startmigration").get(SheetsController.startMigration);
   // aricles
-  app.route("/v1/articles/getbrands").get(ArticlesController.getBrands);
-  app.route("/v1/articles/getarticles").get(ArticlesController.getArticles);
+  app.route("/v1/articles/getbrands/").get(ArticlesController.getBrands);
+  app.route("/v1/articles/getarticles/").get(ArticlesController.getArticles);
 }
 
 interface ISessionRequest extends express.Request {

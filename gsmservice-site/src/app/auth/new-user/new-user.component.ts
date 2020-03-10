@@ -22,6 +22,7 @@ export class NewUserComponent extends BasicFromGroupController {
 
     submitForm() {
         this.cleanRestValidations();
+        console.log("submitForm");
         this.authService
             .newUser({
                 name: this.form.get('name').value,

@@ -9,16 +9,17 @@ import { ArticlesService } from "./articles.service"; // ver esto falla index.ts
 
 export class ArticlesController {
   static getArticles(req: express.Request, res: express.Response) {
-    console.log("getArticle: " + JSON.stringify(req.body));
-    ArticlesService.getAll(req.body)
+    console.log("getArticles: " + JSON.stringify(req.query));
+    ArticlesService.getAll(req.query)
       .then(response => {
         return res.json(response);
       })
       .catch(err => error.handle(res, err));
   }
+
   static getBrands(req: express.Request, res: express.Response) {
-    console.log("getBrands: " + JSON.stringify(req.body));
-    ArticlesService.getAllBrands(req.body)
+    console.log("getBrands: " + JSON.stringify(req.query));
+    ArticlesService.getAllBrands(req.query)
       .then(response => {
         return res.json(response);
       })

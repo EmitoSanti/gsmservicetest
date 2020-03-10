@@ -14,8 +14,13 @@ export class ServicesService extends RestBaseService {
     }
 
     getByQuery(query: any): Observable<any> {
+        const encodeGetParams = p => Object.entries(p).map(kv => kv.map(encodeURIComponent).join("=")).join("&");
+        const result = Object.keys(query).map((key:string) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`).join('&');
+        const params = query;
+        console.log("getStat");
+        console.log("Encondeo" + encodeGetParams(params))
         console.log("articles");
-        return this.http.get(this.base_url + 'articles/getart', this.getRestHeader(query))
+        return this.http.get(this.base_url + 'articles/getarticles/?' + encodeGetParams(params), this.getRestHeader())
         .pipe(
             tap(
                 (response: any) => {
@@ -32,8 +37,11 @@ export class ServicesService extends RestBaseService {
     }
 
     getBrands(query: any): Observable<any> {
-        console.log("articles");
-        return this.http.get(this.base_url + 'articles/getart', this.getRestHeader(query))
+        const encodeGetParams = p => Object.entries(p).map(kv => kv.map(encodeURIComponent).join("=")).join("&");
+        const result = Object.keys(query).map((key:string) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`).join('&');
+        const params = query;
+        console.log("getBrands Servicio: " + JSON.stringify(query));
+        return this.http.get(this.base_url + 'articles/getbrands/?' + encodeGetParams(params), this.getRestHeader(query))
         .pipe(
             tap(
                 (response: any) => {

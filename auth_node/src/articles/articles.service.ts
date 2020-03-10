@@ -49,8 +49,12 @@ export class ArticlesService {
             page: filter.page ? filter.page : 1, // arreglar estructura del body
             limit: filter.limit ? filter.limit : 20
         };
+        const query = { enabled: true };
+        if (filter.enabled == "false") {
+            query.enabled = false;
+        }
         const aggregate = Article.aggregate();
-        aggregate.match(filter);
+        aggregate.match(query);
         aggregate.group({
             _id: "$brand",
             brand: {$last: "$brand"},

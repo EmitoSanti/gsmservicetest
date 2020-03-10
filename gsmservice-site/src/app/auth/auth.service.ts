@@ -119,7 +119,7 @@ export class AuthService extends RestBaseService {
         console.log("newUser");
         return this.http
             .post<User>(
-                this.base_url + 'user/signin',
+                this.base_url + 'user',
                 value,
                 this.getRestHeader()
             ).pipe(

@@ -40,11 +40,12 @@ export class ServicesComponent implements OnInit {
     return value.toLowerCase().replace(/\s/g, '');
   }
 
-  getBrands() {
-    const query = {
+  async getBrands() {
+    const filter = {
       enabled: true // false
-    }
-		this.servicesService.getBrands(query).subscribe(
+    };
+    console.log("getBrands: " + JSON.stringify(filter));
+		await this.servicesService.getBrands(filter).subscribe(
       (response) => { // Success
         console.log("brands: " + JSON.stringify(response[0].resp.docs,null, 2));
 				this.brands = response[0].resp.docs;
@@ -55,10 +56,10 @@ export class ServicesComponent implements OnInit {
 		);
   }
   search() {
-    const query = {
+    const filter = {
       brand: this.selectedBrand
-    }
-		this.servicesService.getByQuery(query).subscribe(
+    };
+		this.servicesService.getByQuery(filter).subscribe(
       (response) => { // Success
         console.log("dataSearch: " + JSON.stringify(response[0].resp.docs,null, 2));
 				this.dataSearch = response[0].resp.docs;

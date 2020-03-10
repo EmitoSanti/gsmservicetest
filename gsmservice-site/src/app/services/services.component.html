@@ -6,7 +6,7 @@
       <mat-label>Seleccione una marca</mat-label>
       <mat-select [(value)]="selectedBrand">
         <mat-option>None</mat-option>
-        <mat-option *ngFor="let brand of brands" [value]="brand.name">{{brand.name}}</mat-option>
+        <mat-option *ngFor="let brand of brands" [value]="brand.brand">{{brand.brand}}</mat-option>
       </mat-select>
     </mat-form-field>
     <p>You selected: {{selectedBrand}}</p>
