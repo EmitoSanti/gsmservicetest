@@ -6,8 +6,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   exports: [
@@ -18,7 +20,9 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatMenuModule,
     MatSelectModule,
     MatAutocompleteModule,
-    MatGridListModule
+    MatGridListModule,
+    MatChipsModule,
+    MatInputModule
   ]
 })
 export class CustomMaterialModule {}

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { RestBaseService } from '../tools/rest.tools';
 import { catchError, map, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -94,8 +95,10 @@ export class AuthService extends RestBaseService {
         console.log("this.usuarioLogueado: " + JSON.stringify(this.usuarioLogueado));
         console.log("localStorage: " + localStorage.getItem("auth_token") + " " + localStorage.length);
         if (this.usuarioLogueado) {
-            return;
+            console.log("getPrincipal if: " + JSON.stringify(of(this.usuarioLogueado)));
+            return of(this.usuarioLogueado);
         } else {
+            console.log("getPrincipal else");
             return this.http.get<User>(this.base_url + 'users/current', this.getRestHeader()).pipe(catchError(this.handleError));
             // .pipe(
             //     tap(

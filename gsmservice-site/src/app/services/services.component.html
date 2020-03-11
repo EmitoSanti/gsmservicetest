@@ -1,40 +1,28 @@
-<div id="services" fxLayout="column" fxLayoutAlign="start start">
+<div id="services" fxLayout="column" fxLayoutAlign="start center">
   <h4>Servicios a moviles</h4>
-  <button (click)="search()">search</button>
-  <div fxLayout="row" fxLayoutAlign="space-around start" >
+  <div class="fix-width" fxLayout="row" fxLayoutAlign="space-evenly center">
     <mat-form-field>
       <mat-label>Seleccione una marca</mat-label>
-      <mat-select [(value)]="selectedBrand">
+      <mat-select [(value)]="selectedBrand" (selectionChange)="this.autocompleteSearch('')">
         <mat-option>None</mat-option>
-        <mat-option *ngFor="let brand of brands" [value]="brand.brand">{{brand.brand}}</mat-option>
+        <mat-option *ngFor="let brand of brands" [value]="brand.brand" >{{brand.brand}}</mat-option>
       </mat-select>
-    </mat-form-field>
-    <p>You selected: {{selectedBrand}}</p>
-    
+    </mat-form-field>   
     <form class="example-form">
-      <input type="text"
-             placeholder="Buscar por Modelo"
-             [formControl]="controlName"
-             [matAutocomplete]="automodelo">
-      <mat-autocomplete #automodelo="matAutocomplete">
-        <mat-option *ngFor="let data of filteredNameSearch | async" [value]="data.name">
-          {{data.name | json}}
-        </mat-option>
-      </mat-autocomplete>
-    </form>
-    <form class="example-form">
-      <input type="text"
-             placeholder="Buscar por MPN"
-             [formControl]="controlMPN"
-             [matAutocomplete]="autompn">
-      <mat-autocomplete #autompn="matAutocomplete">
-        <mat-option *ngFor="let data of filteredMPNSearch | async" [value]="data.mpn">
-          {{data.mpn}}
-        </mat-option>
-      </mat-autocomplete>
+      <mat-form-field class="example-full-width">
+        <input matInput type="text" placeholder="Buscar por Modelo" [formControl]="controlName" [matAutocomplete]="autoName" 
+          aria-label="modelo">
+        <mat-autocomplete autoActiveFirstOption #autoName="matAutocomplete">
+          <mat-option *ngFor="let data of filteredNameSearch | async orderBy: 'mpn'" [value]="data.name">
+            {{data.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
     </form>
   </div>
-
+  <div class="fix-width" fxLayout="row" fxLayoutAlign="space-evenly center">
+    
+  </div>
   <div fxLayout="row wrap" fxflexfill fxLayoutGap="20px grid" class="cards"> 
       <mat-card fxflex="25" *ngFor="let celu of dataSearch">
         <mat-card-header>

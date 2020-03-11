@@ -11,10 +11,15 @@ import { MatMenuTrigger } from '@angular/material/menu';
 export class MenuComponent implements OnInit {
 	title = 'GSM service';
 	@ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
-	constructor(private authService: AuthService, private router: Router, private articlesService: ArticlesService) { }
+	get usuarioLogueado(): User {
+		return this.authService.usuarioLogueado;
+	}
 	ngOnInit(): void {
 		if (localStorage.getItem('auth_token')) {
-			this.authService.getPrincipal().subscribe(
+			console.log("MenuComponent this.usuarioLogueado: " + JSON.stringify(this.usuarioLogueado));
+      console.log("MenuComponent localStorage: " + localStorage.getItem("auth_token") + " " + localStorage.length);
+			this.authService.getPrincipal()
+			.subscribe(
 				(data: User) => { // Success
 					return this.authService.usuarioLogueado = data;
 				},
@@ -24,6 +29,8 @@ export class MenuComponent implements OnInit {
 			);
 		}
 	}
+	constructor(private authService: AuthService, private router: Router, private articlesService: ArticlesService) { }
+
 	navigateMenu(tag: string) {
 		if(tag) { // despues validar se es admin para volver a validad la navegacion a users
 			this.router.navigate([`/${tag}`]);
@@ -49,9 +56,7 @@ export class MenuComponent implements OnInit {
 		// );
 	}
 
-	get usuarioLogueado(): User {
-		return this.authService.usuarioLogueado;
-	}
+
 
   logout() {
 		this.authService.logout().subscribe(

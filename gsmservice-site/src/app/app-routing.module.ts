@@ -11,18 +11,19 @@ import { ServicesComponent } from './services/services.component';
 
 const routes: Routes = [
     // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-    { path: '', component: WelcomeComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'info', component: InfoComponent, canActivate: [AuthGuardService] },
-    { path: 'password', component: NewPasswordComponent, canActivate: [AuthGuardService] },
-    { path: 'registrarse', component: NewUserComponent },
-    { path: 'users', component: UsersComponent, canActivate: [AuthGuardService] },
-    { path: 'services', component: ServicesComponent, canActivate: [AuthGuardService] },
-    // { path: '**', component: PageNotFoundComponent }
+    { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+    { path: 'login', component: LoginComponent, runGuardsAndResolvers: 'always' },
+    { path: 'welcome', component: WelcomeComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'info', component: InfoComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'password', component: NewPasswordComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'registrarse', component: NewUserComponent, runGuardsAndResolvers: 'always' },
+    { path: 'users', component: UsersComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'services', component: ServicesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: '**', redirectTo: 'welcome' }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(routes, { onSameUrlNavigation:  "reload",  enableTracing: false})],
     exports: [RouterModule]
 })
 export class AppRoutingModule { }

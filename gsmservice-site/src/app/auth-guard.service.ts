@@ -8,7 +8,7 @@ export class AuthGuardService implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean|UrlTree {
         if (this.authService.usuarioLogueado) {
-            console.log("canActivate: " + this.authService.usuarioLogueado);
+            console.log("canActivate: " + JSON.stringify(this.authService.usuarioLogueado));
             return true;
         } else {
             this.router.navigate(['/']);
