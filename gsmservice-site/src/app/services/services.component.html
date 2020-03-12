@@ -3,7 +3,7 @@
   <div class="fix-width" fxLayout="row" fxLayoutAlign="space-evenly center">
     <mat-form-field>
       <mat-label>Seleccione una marca</mat-label>
-      <mat-select [(value)]="selectedBrand" (selectionChange)="this.autocompleteSearch('')">
+      <mat-select [(value)]="selectedBrand" (selectionChange)="autocompleteSearch('')">
         <mat-option>None</mat-option>
         <mat-option *ngFor="let brand of brands" [value]="brand.brand" >{{brand.brand}}</mat-option>
       </mat-select>
@@ -12,8 +12,8 @@
       <mat-form-field class="example-full-width">
         <input matInput type="text" placeholder="Buscar por Modelo" [formControl]="controlName" [matAutocomplete]="autoName" 
           aria-label="modelo">
-        <mat-autocomplete autoActiveFirstOption #autoName="matAutocomplete">
-          <mat-option *ngFor="let data of filteredNameSearch | async orderBy: 'mpn'" [value]="data.name">
+        <mat-autocomplete autoActiveFirstOption #autoName="matAutocomplete" (optionSelected)="autocompleteSearch($event.option.value)">
+          <mat-option *ngFor="let data of filteredNameSearch | async orderBy: 'name'" [value]="data.name">
             {{data.name}}
           </mat-option>
         </mat-autocomplete>

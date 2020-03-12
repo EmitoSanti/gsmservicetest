@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { ServicesService } from './services.service';
+import { Router, NavigationEnd } from '@angular/router';
 @Component({
   selector: 'app-services',
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss']
 })
-export class ServicesComponent implements OnInit {
+export class ServicesComponent implements OnInit  {
+  navigationSubscription: any; // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
   brands: any = [];
   selectedBrand: string;
 
@@ -19,9 +21,9 @@ export class ServicesComponent implements OnInit {
   constructor(private servicesService: ServicesService) { }
   ngOnInit() {
     this.getBrands();
-    this.selectedBrand= "samsung"; // dejar samsung por default 
+    this.selectedBrand= "Samsung"; // dejar samsung por default
   }
-
+ 
   getBrands() {
     const filter = {
       enabled: true
@@ -37,7 +39,6 @@ export class ServicesComponent implements OnInit {
 			}
 		);
   }
-
   onGetTaxList(data: any) {
     this.dataSearch = data;
     console.log("onGetTaxList: " + JSON.stringify(this.dataSearch,null, 2));
@@ -53,7 +54,6 @@ export class ServicesComponent implements OnInit {
     console.log("filterValue: " + filterValue);
     return this.dataSearch.filter((dataSearch: any) => dataSearch.name.toLowerCase().includes(filterValue));
   }
-
   autocompleteSearch(name: string) {
     let filter: any = {
       brand : this.selectedBrand

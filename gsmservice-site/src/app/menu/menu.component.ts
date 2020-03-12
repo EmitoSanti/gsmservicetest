@@ -46,14 +46,6 @@ export class MenuComponent implements OnInit {
 			}
 		);
 		console.log("cosa");
-		// this.articlesService.getConfig().subscribe(
-		//   (data) => { // Success
-		//     console.log("data: " + JSON.stringify(data));
-		//   },
-		//   (error) => {
-		//     console.error(error);
-		//   }
-		// );
 	}
 
 

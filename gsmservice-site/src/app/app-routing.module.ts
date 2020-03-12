@@ -11,7 +11,7 @@ import { ServicesComponent } from './services/services.component';
 
 const routes: Routes = [
     // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-    { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+    { path: '', component: WelcomeComponent, pathMatch: 'full' },
     { path: 'login', component: LoginComponent, runGuardsAndResolvers: 'always' },
     { path: 'welcome', component: WelcomeComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
     { path: 'info', component: InfoComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
@@ -19,7 +19,7 @@ const routes: Routes = [
     { path: 'registrarse', component: NewUserComponent, runGuardsAndResolvers: 'always' },
     { path: 'users', component: UsersComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
     { path: 'services', component: ServicesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-    { path: '**', redirectTo: 'welcome' }
+    { path: '**', component: WelcomeComponent }
 ];
 
 @NgModule({
