@@ -8,6 +8,11 @@
 				<a routerLink="/services">Servicios</a> <!-- buscador de servicios-->
 			</button>
 		</div>
+		<div class="fix-width" fxLayout="row" fxLayoutAlign="space-around center" *ngIf="usuarioLogueado.permissions[0] == 'admin'">
+			<button mat-button color="primary">
+				<a routerLink="/settings">Settings</a> <!-- Settings-->
+			</button>
+		</div>
 		<button mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">Perfil</button>
 	</mat-toolbar>
 	<mat-menu #menu="matMenu">

@@ -1,0 +1,28 @@
+<!-- *ngIf="usuarioLogueado.permissions[0] == 'admin'" -->
+<div id="settings" fxLayout="column" fxLayoutAlign="start center">
+  <h4>Configuración con Google Sheets</h4>
+  <div class="authorization" fxLayout="column" fxLayoutAlign="space-evenly center" *ngIf="isAuthorize; else elseBlock">
+    <div  fxLayout="row" fxLayoutAlign="space-evenly center">
+      <h5 class="is-authorizate" *ngIf="isAuthorize">
+        Configuración Habilitada
+      </h5>
+      <button (click)="getAuthorization()">Verifizar</button>
+    </div>
+    <div  fxLayout="column" fxLayoutAlign="space-evenly center" >
+      <h5 class="is-authorizate" >
+        Migración de Google Sheet a Base de Datos
+      </h5>
+      <button (click)="startMigration()" *ngIf="isAuthorize">Comenzar Migración</button>
+    </div>
+
+  </div>
+  <ng-template #elseBlock>
+    <h5 class="not-autorizate">Configuración NO Habilitada</h5>
+  </ng-template>
+  <div  fxLayout="row" fxLayoutAlign="space-evenly center">
+    <h5 class="is-authorizate" *ngIf="isAuthorize">
+      Generar nueva autorización: 
+    </h5>
+    <button (click)="generateNewAuthorization()">Generar</button>
+  </div>
+</div>

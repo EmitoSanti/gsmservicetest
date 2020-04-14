@@ -24,7 +24,7 @@ export class ServicesService extends RestBaseService {
         .pipe(
             tap(
                 (response: any) => {
-                    console.log("response: " + JSON.stringify(response));
+                    // console.log("response: " + JSON.stringify(response));
                     return response;
                 },
                 (error) => {
@@ -45,7 +45,7 @@ export class ServicesService extends RestBaseService {
         .pipe(
             tap(
                 (response: any) => {
-                    console.log("response: " + JSON.stringify(response));
+                    // console.log("response: " + JSON.stringify(response));
                     return response;
                 },
                 (error) => {

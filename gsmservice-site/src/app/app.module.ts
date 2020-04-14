@@ -28,20 +28,23 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { ArticlesComponent } from './articles/articles.component';
 import { ServicesComponent } from './services/services.component';
 import { ServicesService } from './services/services.service';
+import { SettingsComponent } from './settings/settings.component';
+import { SettingsService } from './settings/settings.service';
 
 @NgModule({
     declarations: [
         AppComponent,
-        MenuComponent,
         // ToolbarComponent,
         LoginComponent,
         NewUserComponent,
         WelcomeComponent,
+        MenuComponent,
         InfoComponent,
         NewPasswordComponent,
         UsersComponent,
         ArticlesComponent,
-        ServicesComponent
+        ServicesComponent,
+        SettingsComponent
     ],
     imports: [
         CustomMaterialModule,
@@ -56,7 +59,7 @@ import { ServicesService } from './services/services.service';
         ObserversModule,
         PlatformModule
     ],
-    providers: [AuthGuardService, AuthService, ArticlesService, ServicesService],
+    providers: [AuthGuardService, AuthService, ArticlesService, ServicesService, SettingsService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

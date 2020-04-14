@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { RestBaseService } from '../tools/rest.tools';
 import { catchError, map, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService extends RestBaseService {
-    public usuarioLogueado: User;
+    public usuarioLogueado: Observable<User>;
+    // public usuarioL = new EventEmitter();
+    
     private base_url = environment.backEndServerUrl;
 
     constructor(private http: HttpClient) {
@@ -30,9 +31,9 @@ export class AuthService extends RestBaseService {
             ).pipe(
                 tap(
                     (response: any) => {
-                        console.log("response: " + JSON.stringify(response.token));
+                        console.log("login response: " + JSON.stringify(response.token));
                         localStorage.setItem('auth_token', response.token);
-                        console.log("localStorage: " + JSON.stringify(localStorage));
+                        console.log("login localStorage: " + JSON.stringify(localStorage));
                         return this.getPrincipal();
                     },
                     error => {
@@ -95,26 +96,27 @@ export class AuthService extends RestBaseService {
         console.log("this.usuarioLogueado: " + JSON.stringify(this.usuarioLogueado));
         console.log("localStorage: " + localStorage.getItem("auth_token") + " " + localStorage.length);
         if (this.usuarioLogueado) {
-            console.log("getPrincipal if: " + JSON.stringify(of(this.usuarioLogueado)));
-            return of(this.usuarioLogueado);
+            console.log("getPrincipal if: " + JSON.stringify(this.usuarioLogueado));
+
+            return this.usuarioLogueado;
         } else {
             console.log("getPrincipal else");
-            return this.http.get<User>(this.base_url + 'users/current', this.getRestHeader()).pipe(catchError(this.handleError));
-            // .pipe(
-            //     tap(
-            //         (data) => {
-            //             console.log("data: " + JSON.stringify(data));
-            //             this.usuarioLogueado = data;
-            //             return data as User;
-            //         },
-            //         (error) => {
-            //             console.log("error: " + JSON.stringify(error));
-            //             localStorage.removeItem('auth_token');
-            //             this.usuarioLogueado = undefined;
-            //             this.handleError;
-            //         }
-            //     )
-            // );
+            return this.usuarioLogueado = this.http.get<User>(this.base_url + 'users/current', this.getRestHeader())
+            .pipe(
+                tap(
+                    (data: User) => {
+                        console.log(" getPrincipal data: " + JSON.stringify(data));
+                        
+                        return data;
+                    },
+                    (error) => {
+                        console.log("error: " + JSON.stringify(error));
+                        localStorage.removeItem('auth_token');
+                        this.usuarioLogueado = undefined;
+                        this.handleError;
+                    }
+                )
+            );
         }
     }
 

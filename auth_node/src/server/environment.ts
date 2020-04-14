@@ -15,7 +15,8 @@ export function getConfig(environment: any): Config {
     dotenv.config({ path: ".env" });
 
     config = {
-      port: process.env.SERVER_PORT || "3000",
+      port: parseInt(process.env.SERVER_PORT) || 3000,
+      localIp: "192.168.1.165" || "localhost",
       logLevel: process.env.LOG_LEVEL || "debug",
       mongoDb: process.env.MONGODB || "mongodb://localhost/gsidemo",
       jwtSecret: process.env.JWT_SECRET || "+b59WQF+kUDr0TGxevzpRV3ixMvyIQuD1O",
@@ -27,7 +28,8 @@ export function getConfig(environment: any): Config {
 }
 
 export interface Config {
-  port: string;
+  port: number;
+  localIp: string;
   logLevel: string; // 'debug' | 'verbose' | 'info' | 'warn' | 'error';
   mongoDb: string;
   passwordSalt: string;

@@ -5,7 +5,7 @@ import { AuthService } from '../auth.service';
 import { BasicFromGroupController } from '../../tools/error.form';
 
 @Component({
-    selector: 'app-auth-new-user',
+    selector: 'new-user',
     templateUrl: './new-user.component.html',
     styleUrls: ['./new-user.component.scss']
 })

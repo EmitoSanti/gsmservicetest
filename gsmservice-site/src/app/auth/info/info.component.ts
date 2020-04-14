@@ -3,20 +3,17 @@ import { Router } from '@angular/router';
 import { AuthService, User } from '../auth.service';
 
 @Component({
-    selector: 'app-auth-info',
+    selector: 'info',
     templateUrl: './info.component.html',
     styleUrls: ['./info.component.scss']
 })
 export class InfoComponent implements OnInit {
     token: string;
+    public loggedInUser;
 
-    get loggedInUser(): User {
-        return this.authService.usuarioLogueado;
-    }
-
+    constructor(private authService: AuthService, private router: Router) {}
     ngOnInit(): void {
         this.token = 'bearer ' + localStorage.getItem('auth_token');
+        this.authService.getPrincipal().subscribe( userCurrent => this.loggedInUser = userCurrent);
     }
-
-    constructor(private authService: AuthService, private router: Router) { }
 }

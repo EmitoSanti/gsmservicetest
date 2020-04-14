@@ -1,6 +1,6 @@
 <div id="services" fxLayout="column" fxLayoutAlign="start center">
   <h4>Servicios a moviles</h4>
-  <div class="fix-width" fxLayout="row" fxLayoutAlign="space-evenly center">
+  <div class="filter-container" fxLayout="row" fxLayoutAlign="space-evenly center">
     <mat-form-field>
       <mat-label>Seleccione una marca</mat-label>
       <mat-select [(value)]="selectedBrand" (selectionChange)="autocompleteSearch('')">
@@ -21,25 +21,39 @@
     </form>
   </div>
   <div class="fix-width" fxLayout="row" fxLayoutAlign="space-evenly center">
-    
+    <mat-paginator [length]="totalDocs" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="getArticles($event)">
+    </mat-paginator>
+    length: {{totalDocs}} - limit: {{limit}} - totalPages: {{totalPages}} - totalDocs:{{totalDocs}} - pageSize: {{pageSize}} - pageSizeOptions: {{pageSizeOptions}}
   </div>
-  <div fxLayout="row wrap" fxflexfill fxLayoutGap="20px grid" class="cards"> 
-      <mat-card fxflex="25" *ngFor="let celu of dataSearch">
-        <mat-card-header>
-          <mat-card-title>{{celu.brand}} - {{celu.name}}</mat-card-title>
-          <mat-card-subtitle>{{celu.mpn}}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p>
-            {{celu.services}}
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button>
-            <!-- <mat-icon>favorite</mat-icon> -->
-          </button>
-        </mat-card-actions>
-      </mat-card>
+  <div fxLayout="row wrap" fxflexfill fxLayoutGap="grid" class="list-cards">
+    <mat-card fxflex="25" *ngFor="let celu of dataSearch">
+      <mat-card-header>
+        <mat-card-title>
+          <span>{{celu.brand}}</span>
+          &nbsp; &nbsp; - &nbsp; &nbsp;
+          <span>{{celu.name}}</span>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="row" fxLayoutAlign="space-between start">
+        <div>
+          <ul class="list-service" *ngFor="let service of celu.services">
+            <li *ngIf="service.value">
+              <span>
+                {{service.name}}: {{service.value}}
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div class="mpn"> 
+          <span>{{celu.mpn}}</span>
+        </div>
+      </mat-card-content>
+      <!-- <mat-card-actions>
+        <button mat-button>
+          <mat-icon>favorite</mat-icon>
+        </button>
+      </mat-card-actions> -->
+    </mat-card>
   </div>
   <!-- <mat-grid-list cols="1" gutterSize="1rem" rowHeight="4:1">
     <mat-grid-tile>1</mat-grid-tile>

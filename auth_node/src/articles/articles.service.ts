@@ -5,13 +5,26 @@ import { Article, IArticle } from "./article"; // modelo/schema para los objetos
 import * as _ from "lodash";
 
 export class ArticlesService {
-    static getAll(filter: any): Promise<Array<any>> { // a filter hay que parcear
-        console.log("getAll: " + JSON.stringify(filter));
+    static getAll(brand: string, name: string, mpn: string, pagination: any): Promise<Array<any>> { // a filter hay que parcear
+        console.log("ArticlesService getAll");
+        console.log("pagination: " + JSON.stringify(pagination));
         // https://github.com/aravindnc/mongoose-aggregate-paginate-v2/blob/master/tests/index.js
         const options = {
-            page: filter.page ? filter.page : 1, // arreglar estructura del body
-            limit: filter.limit ? filter.limit : 20
+            page: pagination.pageIndex ? (parseInt(pagination.pageIndex) + 1) : 1, // Current page number > 0
+            limit: pagination.pageSize ? pagination.pageSize : 24, // Limit that was used = pageSize
         };
+        console.log("options: " + JSON.stringify(options));
+        const filter: any = {};
+        if (brand) {
+            filter.brand = brand;
+        }
+        if (name) {
+            filter.name = name;
+        }
+        if (mpn) {
+            filter.mpn = mpn;
+        }
+        console.log("filter: " + JSON.stringify(filter));
         const aggregate = Article.aggregate();
         aggregate.match(filter);
         aggregate.group({
@@ -29,7 +42,7 @@ export class ArticlesService {
             "services": 1,
             "enabled": 1
         });
-        aggregate.sort({"mpn": 1, "name": 1}); // revisar sorting a nivel de mpn
+        aggregate.sort({"name": 1, "mpn": 1}); // revisar sorting a nivel de mpn
         console.log("aggregate: " + JSON.stringify(aggregate));
         return new Promise((resolve, reject) => {
             return Article.aggregatePaginate(aggregate, options, function(err: any, resp: any) {
@@ -43,7 +56,7 @@ export class ArticlesService {
     }
 
     static getAllBrands(filter: any): Promise<Array<any>> { // a filter hay que parcear
-        console.log("getAllBrands: " + JSON.stringify(filter));
+        // console.log("getAllBrands: " + JSON.stringify(filter));
         // https://github.com/aravindnc/mongoose-aggregate-paginate-v2/blob/master/tests/index.js
         const options = {
             page: filter.page ? filter.page : 1, // arreglar estructura del body

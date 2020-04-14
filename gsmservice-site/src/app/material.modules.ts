@@ -10,6 +10,8 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/ma
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   exports: [
@@ -22,7 +24,9 @@ import { MatInputModule } from '@angular/material/input';
     MatAutocompleteModule,
     MatGridListModule,
     MatChipsModule,
-    MatInputModule
+    MatInputModule,
+    MatPaginatorModule,
+    MatIconModule
   ]
 })
 export class CustomMaterialModule {}

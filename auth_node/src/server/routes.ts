@@ -25,9 +25,9 @@ export function init(app: express.Express) {
   app.route("/v1/users").get(passport.authenticate("jwt", { session: false }), getAll);
   app.route("/v1/users/current").get(passport.authenticate("jwt", { session: false }), current);
   // sheet
-  app.route("/v1/google/newcode/").get(SheetsController.getNewCode);
-  app.route("/v1/google/code/").get(SheetsController.setNewCode);
-  app.route("/v1/google/authorize").get(SheetsController.authorize);
+  app.route("/v1/google/newcode").get(SheetsController.getNewCode); // nuevo token Auth
+  app.route("/v1/google/code/").get(SheetsController.setNewCode); // front-end no lo debe usar
+  app.route("/v1/google/authorize").get(SheetsController.authorize); // verifica si el token esta habilitado
   app.route("/v1/google/startmigration").get(SheetsController.startMigration);
   // aricles
   app.route("/v1/articles/getbrands/").get(ArticlesController.getBrands);

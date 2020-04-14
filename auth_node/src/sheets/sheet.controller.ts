@@ -26,6 +26,7 @@ export class SheetsController {
     try {
       const newCode = req.query.code;
       SheetsService.setNewCode(newCode);
+      // encajar socket o rabbit
     } catch (err) {
       error.handle(res, err); // revisar si funca bien
     }
@@ -40,25 +41,34 @@ export class SheetsController {
         res.status(200).json("authorized");
       })
       .catch((err) => {
+        // err viene con el path del archivo que fallo si lo mando al front crea una pista para romper la seguridad de la plataforma
         const error  = {
           errno: err.errno,
           code: err.code,
           syscall: err.syscall
         };
-        // err viene con el path del archivo que fallo si lo mando al front crea una pista para romper la seguridad de la plataforma
         res.status(400).json(error);
       });
   }
   static startMigration(req: express.Request, res: express.Response) {
     console.log("startMigration");
+    let authorization: any = {};
     SheetsService.readTokenFile()
     .then((token) => {
       console.log("token: " + token);
       return SheetsService.authorization(token);
     })
-    .then((response) => {
-      console.log("response: " + JSON.stringify(response));
-      SheetsService.startMigration(response);
+    .then((response: any) => {
+      console.log("response token: " + JSON.stringify(response));
+      authorization = response;
+      return SheetsService.sortByBrand(response);
+    })
+    .then((response: any) => {
+      console.log("response sorted: " + JSON.stringify(response));
+      return SheetsService.getAllData(authorization);
+    })
+    .then((resp) => {
+      console.log("resp: " + JSON.stringify(resp));
       res.status(200);
     })
     .catch((err) => {

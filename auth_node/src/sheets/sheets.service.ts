@@ -80,22 +80,47 @@ export class SheetsService {
     return promise;
   }
 
-  static async startMigration(auth: any) { // control de funciones para SheetsServices para automataizar alguns flujos y nos hacer tantas llamadas
-    try {
-      console.log("startMigration");
-      await this.runInSheet(auth); // revisar
-    } catch (err) {
-      console.log(err); // devolver error al front
-    }
-  }
-  static async runInSheet(oAuth2Client: any) { // control de funciones que trabajan sobre los sheets
-    await this.sortByBrand(oAuth2Client);
-    await this.getAllData(oAuth2Client);
+  static sortByBrand(authorization: any) {
+    const auth = authorization;
+    console.log("sortByBrand");
+    const promise = new Promise<any>((resolve, reject) => {
+      const request = {
+        spreadsheetId: SPREAD_SHEET_ID,
+        resource: {
+          requests: [
+            {
+              sortRange: {
+                range: RANGE_HARD,
+                sortSpecs: [
+                  {
+                    dimensionIndex: 0, // index column
+                    sortOrder: "ASCENDING" // DESCENDING
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        auth: auth
+      };
+
+      try {
+        const sheets = google.sheets({version: VERSION_GOOGLE_API, auth});
+        const response = sheets.spreadsheets.batchUpdate(request);
+        console.log("response: " + JSON.stringify(response, null, 2));
+        return resolve("It sorted");
+      } catch (err) {
+        console.error("error: " + err);
+        return reject(err);
+      }
+    });
+    return promise;
   }
 
-  static getAllData(auth: any) { // de any a AUTH
+  static getAllData(authorization: any) { // de any a AUTH
+    const auth = authorization;
     console.log("getAllData");
-    return new Promise<any>((resolve, reject) => {
+    const promise = new Promise<any>((resolve, reject) => {
       const sheets = google.sheets({version: VERSION_GOOGLE_API, auth});
       sheets.spreadsheets.values.get({
         spreadsheetId: SPREAD_SHEET_ID,
@@ -103,58 +128,60 @@ export class SheetsService {
         valueRenderOption: "FORMATTED_VALUE",
         dateTimeRenderOption: "SERIAL_NUMBER"
       }, (err: any, res: any) => {
-        if (err) return console.log("The API returned an error: " + err);
+        if (err) {
+          console.log("The API returned an error: " + err);
+          return reject(err);
+        }
         const rows = res.data.values;
         if (rows) {
-          console.log("Datos: " + JSON.stringify(rows));
+          // console.log("Datos: " + JSON.stringify(rows));
           const allRows = rows.map(function(row: any) { // de any a IArticle
             // console.log("marca: " + `${row[0]}` + "   modelo: " + `${row[1]}` + "   mpn: " + `${row[2]}`);
             return {
               brand: row[0],
               name: row[1],
               mpn: row[2],
+              services: [
+                {
+                  name: "liberar",
+                  value: row[4]
+                },
+                {
+                  name: "full",
+                  value: row[5]
+                },
+                {
+                  name: "cuenta google",
+                  value: row[6]
+                },
+                {
+                  name: "cuenta samsung",
+                  value: row[7]
+                },
+                {
+                  name: "software",
+                  value: row[8]
+                }
+              ]
             };
           });
           console.log("allRows: " + JSON.stringify(allRows));
-          ArticlesService.migrationArticles(allRows);
-          resolve();
+          ArticlesService.migrationArticles(allRows)
+            .then( () => {
+              return resolve("Fin migracion");
+            })
+            .catch(
+              (error) => {
+                return reject(error);
+              }
+            );
         } else {
           console.log("No data found.");
-          reject();
+          return reject("Algo se rumpio");
         }
       });
     });
-  }
-
-  static async sortByBrand(auth: any) {
-    console.log("sortByBrand");
-    const request = {
-      spreadsheetId: SPREAD_SHEET_ID,
-      resource: {
-        requests: [
-          {
-            sortRange: {
-              range: RANGE_HARD,
-              sortSpecs: [
-                {
-                  dimensionIndex: 0, // index column
-                  sortOrder: "ASCENDING" // DESCENDING
-                }
-              ]
-            }
-          }
-        ]
-      },
-      auth: auth
-    };
-
-    try {
-      const sheets = google.sheets({version: VERSION_GOOGLE_API, auth});
-      const response = (await sheets.spreadsheets.batchUpdate(request)).data;
-      console.log("response: " + JSON.stringify(response, null, 2));
-    } catch (err) {
-      console.error("error: " + err);
-    }
+    return promise;
   }
 }
 

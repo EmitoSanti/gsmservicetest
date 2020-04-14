@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService, User } from '../auth.service';
 import { BasicFromGroupController } from '../../tools/error.form';
 
 @Component({
-    selector: 'app-auth-new-password',
+    selector: 'new-password',
     templateUrl: './new-password.component.html',
     styleUrls: ['./new-password.component.scss']
 })
@@ -21,7 +21,8 @@ export class NewPasswordComponent extends BasicFromGroupController {
 
     constructor(private authService: AuthService, private router: Router) {
         super();
-        this.form.get('login').setValue(authService.usuarioLogueado.login);
+        this.form.get('login').setValue(this.authService.usuarioLogueado); // estaba this.authService.usuarioLogueado.login
+        console.log("que hay : " + JSON.stringify(this.form.get('login').setValue(this.authService.usuarioLogueado)));
     }
 
     validarPasswords(group: FormGroup) {
@@ -36,7 +37,6 @@ export class NewPasswordComponent extends BasicFromGroupController {
             });
             return this.errors.values;
         }
-        // tslint:disable-next-line:no-null-keyword
         return null;
     }
 

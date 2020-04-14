@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../auth/auth.service';
-import { ArticlesService } from '../articles/articles.service';
 import { MatMenuTrigger } from '@angular/material/menu';
+
 @Component({
 	selector: 'app-menu',
 	templateUrl: './menu.component.html',
@@ -11,49 +11,27 @@ import { MatMenuTrigger } from '@angular/material/menu';
 export class MenuComponent implements OnInit {
 	title = 'GSM service';
 	@ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
-	get usuarioLogueado(): User {
-		return this.authService.usuarioLogueado;
-	}
+	public usuarioLogueado;
+	
+	constructor(private authService: AuthService, private router: Router) {}
 	ngOnInit(): void {
 		if (localStorage.getItem('auth_token')) {
-			console.log("MenuComponent this.usuarioLogueado: " + JSON.stringify(this.usuarioLogueado));
       console.log("MenuComponent localStorage: " + localStorage.getItem("auth_token") + " " + localStorage.length);
-			this.authService.getPrincipal()
-			.subscribe(
-				(data: User) => { // Success
-					return this.authService.usuarioLogueado = data;
-				},
-				(error) => {
-					console.error(error);
-				}
-			);
+			this.authService.getPrincipal().subscribe( userCurrent => this.usuarioLogueado = userCurrent);
 		}
 	}
-	constructor(private authService: AuthService, private router: Router, private articlesService: ArticlesService) { }
 
 	navigateMenu(tag: string) {
 		if(tag) { // despues validar se es admin para volver a validad la navegacion a users
 			this.router.navigate([`/${tag}`]);
 		}
 	}
-	cosa() {
-		this.authService.getPrincipal().subscribe(
-			(data: User) => { // Success
-				return this.authService.usuarioLogueado = data;
-			},
-			(error) => {
-				console.error(error);
-			}
-		);
-		console.log("cosa");
-	}
-
-
 
   logout() {
 		this.authService.logout().subscribe(
 			() => { // Success
 				this.router.navigate(['/']);
+				location.reload(); // arreglar porque esto es un parche cuando se desloguea debe desaparecer el componenete menu
 			},
 			(error) => {
 				console.error(error);

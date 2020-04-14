@@ -5,7 +5,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { BasicFromGroupController } from '../../tools/error.form';
 
 @Component({
-    selector: 'app-users',
+    selector: 'users',
     templateUrl: './users.component.html',
     styleUrls: ['./users.component.scss']
 })
