@@ -7,27 +7,26 @@
   .filter-container {
     width: 35%;
   }
-  .example-card {
-    min-width: 100%;
-    margin: 40px;
-  }
+
   .list-cards {
-    width: 95rem;
+    max-width: 95rem;
   }
   mat-card {
     padding: 0;
-    width: 355px;
+    width: fit-content;
+    min-width: 20rem;
+    max-width: 24rem !important;
     height: fit-content;
-    max-height: 210px;
+    max-height: 14rem;
     border-radius: 0.35rem;
     border-left: 5px solid #0085c3;
-    margin: 0 1rem 0.8rem 0;
+    margin: 0 0.5rem 0.8rem 00;
 
     mat-card-header {
       border-top-right-radius: 0.35rem;
       background: linear-gradient(to bottom, #ba2737 20%, #b41324 90%);
       mat-card-title {
-        margin: 0;;
+        margin: 0;
         padding: 0.7rem 0 0.4rem 2rem;
       }
     }
@@ -56,7 +55,10 @@
   .fix-width {
     width: 100%;
   }
-
+  .is-loading ::ng-deep .mat-option-text {
+    display: flex;
+    justify-content: center;
+  }
 
   mat-grid-list {
     position: inherit;

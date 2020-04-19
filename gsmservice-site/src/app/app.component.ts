@@ -7,3 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 }
+// https://stackoverflow.com/questions/47591240/how-to-change-itemsperpagelabel-in-mat-paginator-angular-4

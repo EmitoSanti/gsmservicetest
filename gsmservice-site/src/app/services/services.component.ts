@@ -1,97 +1,127 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { Component, OnInit,  } from '@angular/core';
+import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { catchError, map, switchMap, debounceTime, tap, finalize } from 'rxjs/operators';
 import { ServicesService } from './services.service';
-import { PageEvent } from '@angular/material/paginator';
+import { PageEvent  } from '@angular/material/paginator';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-services',
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss']
 })
+
 export class ServicesComponent implements OnInit {
+  // Brand Select
   brands: any = [];
   selectedBrand: string;
 
-  controlName = new FormControl();
-  filteredNameSearch: Observable<any>;
-  dataSearch: any = [];
-
-  // MatPaginator Inputs
+  // Autocomplete Search
+  isLoading = false;
+  autocompleteSearchForm: FormGroup;
+  filteredNameSearch: any[] = [];
+ 
+  // Paginator Inputs
   pageSize: number = 12;
   pageSizeOptions: number[] = [4, 8, 12, 24, 48];
-  // MatPaginator Output
+  // Paginator Output
   pageEvent: PageEvent;
-
   totalDocs: number;
   limit: number;
   totalPages: number;
 
-  constructor(private servicesService: ServicesService) { }
-  ngOnInit() {
-    this.getBrands();
-    this.selectedBrand= "Samsung"; // dejar samsung por default
+  constructor(private fb: FormBuilder, private servicesService: ServicesService) {
+    this.autocompleteSearchForm = this.fb.group({
+      searchInput: this.fb.control({value: '', disabled: false})
+    });
   }
- 
+  
+  ngOnInit() {
+    
+    this.getBrands();
+    this.selectedBrand= "Samsung"; // dejar samsung por default pasar a un filtro que obtenga samsung 
+
+   
+    this.autocompleteSearch();
+  }
+
+  autocompleteSearch() {
+    
+    this.autocompleteSearchForm.get('searchInput').valueChanges
+      .pipe(
+        debounceTime(300),
+        tap(() => this.isLoading = true),
+        switchMap((value: any) => this.getArticles({name: value})
+        .pipe(finalize(() => this.isLoading = false),))
+      )
+      .subscribe();
+  }
+  displayFn(data: any) {
+    if (data) { return data.name; }
+  }
+
   getBrands() {
-    const filter = {
+    this.autocompleteSearchForm.reset({searchInput: ''}, {emitEvent: false});
+    let filter = {
       enabled: true
     };
+
 		this.servicesService.getBrands(filter).subscribe(
       (response) => {
         console.log("brands: " + JSON.stringify(response[0].resp.docs));
         this.brands = response[0].resp.docs;
-        this.getArticles({});
+        this.getArticles(undefined);
 			},
 			(error) => {
 			  console.error(error);
 			}
 		);
   }
-  onGetTaxList(data: any) {
-    this.dataSearch = data;
-    // console.log("onGetTaxList: " + JSON.stringify(this.dataSearch));
-    this.filteredNameSearch = this.controlName.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => value.length >= 1 ? this._filter(value) : [])
-      );
-  }
-  private _filter(value: string) {
-    const filterValue = value.toLowerCase();
-    console.log("filterValue: " + filterValue);
-    return this.dataSearch.filter((dataSearch: any) => dataSearch.name.toLowerCase().includes(filterValue));
-  }
 
-  autocompleteSearch(name: string) {
-    let filter: any = {};
-    if(name != '') {
-      filter.name = name;
-    } 
-  }
+  // dataSearch: any = [];
+  // onGetTaxList(data: any) {
+  //   this.dataSearch = data;
+  //   // console.log("onGetTaxList: " + JSON.stringify(this.dataSearch));
+  //   this.filteredNameSearch = this.controlName.valueChanges
+  //     .pipe(
+  //       startWith(''),
+  //       map(value => value.length >= 1 ? this._filter(value) : [])
+  //     );
+  // }
+  // private _filter(value: string) {
+  //   const filterValue = value.toLowerCase();
+  //   console.log("filterValue: " + filterValue);
+  //   return this.dataSearch.filter((dataSearch: any) => dataSearch.name.toLowerCase().includes(filterValue));
+  // }
 
-  getArticles(value: any) {
-    console.log("value: " + JSON.stringify(value));
 
-    let filter: any = value;
+  getArticles(value: any): Observable<any> {
+    console.log("getArticles: " + JSON.stringify(value));
+    let filter: any = {}; // pasar a global en el controller o algo asi asi sacamos los filter.brand y enabled
+    let result;
+    if (!_.isEmpty(value) && value && !_.isUndefined(value) && !_.isNull(value) && value != '') {
+      filter = value;
+    }
+
     filter.brand = this.selectedBrand;
+    filter.enabled = true;
     console.log("filter: " + JSON.stringify(filter));
-    this.servicesService.getByQuery(filter).subscribe(
+   
+    result = this.servicesService.getByQuery(filter).subscribe(
       (response) => {
         // console.log("dataSearch: " + JSON.stringify(response[0].resp.docs));
-        // this.dataSearch = response[0].resp.docs;
         this.totalDocs = response[0].resp.totalDocs;
         this.limit = response[0].resp.limit;
         this.totalPages = response[0].resp.totalPages;
-        const data = response[0].resp.docs;
-
-
-        this.onGetTaxList(data);
+        this.filteredNameSearch = response[0].resp.docs;
+        // console.log("this.filteredNameSearch: " + this.filteredNameSearch);
 			},
-			(error) => {
-			  console.error(error);
-			}
-		);
+      catchError(error => {
+        // console.log(error);
+        return of("Datos no encontrados");
+      })
+    );
+    return result; 
   }
 }

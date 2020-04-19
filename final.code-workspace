@@ -8,7 +8,6 @@
 		"files.exclude": {
 			"**/node_modules": true
 		},
-		"files.autoSave": "onFocusChange",
 		"editor.tabCompletion": "on",
 		"editor.tabSize": 2
 	}

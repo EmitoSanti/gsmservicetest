@@ -17,7 +17,7 @@ export class ServicesService extends RestBaseService {
         const encodeGetParams = p => Object.entries(p).map(kv => kv.map(encodeURIComponent).join("=")).join("&");
         const result = Object.keys(query).map((key:string) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`).join('&');
         const params = query;
-        console.log("getStat");
+        console.log("getByQuery");
         console.log("Encondeo" + encodeGetParams(params))
         console.log("articles");
         return this.http.get(this.base_url + 'articles/getarticles/?' + encodeGetParams(params), this.getRestHeader())

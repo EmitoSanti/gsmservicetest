@@ -3,8 +3,20 @@
 import * as error from "../server/error";
 import { Article, IArticle } from "./article"; // modelo/schema para los objetos en mongo
 import * as _ from "lodash";
+// no olvidar de importar el servicio de utils cuanod se pase
+export class RegExpConstants { // a utils constante
+
+    static get ESCAPE_REGEX_REGEXP() {
+        return /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g;
+    }
+}
 
 export class ArticlesService {
+    
+    static escapeRegExp(value: any) { // a utils servicio 
+        return value ? value.replace(RegExpConstants.ESCAPE_REGEX_REGEXP, '\\$&') : '';
+    }
+
     static getAll(brand: string, name: string, mpn: string, pagination: any): Promise<Array<any>> { // a filter hay que parcear
         console.log("ArticlesService getAll");
         console.log("pagination: " + JSON.stringify(pagination));
@@ -15,11 +27,14 @@ export class ArticlesService {
         };
         console.log("options: " + JSON.stringify(options));
         const filter: any = {};
+        
         if (brand) {
             filter.brand = brand;
         }
         if (name) {
-            filter.name = name;
+            // let searchText = new RegExp(UtilsService.escapeRegExp(name), 'i'); // usar cuando se pase utils service
+            let searchText = new RegExp(this.escapeRegExp(name), 'i');
+            filter.name = {$regex: searchText};
         }
         if (mpn) {
             filter.mpn = mpn;
