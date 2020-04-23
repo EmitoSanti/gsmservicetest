@@ -53,7 +53,8 @@ export class RestBaseService {
         
         const options = new RequestOptions({ headers: headers, withCredentials: true });
         const options = new HttpRequest("",url,{ headers: headers, withCredentials: true });*/
-        console.log("getRestHeader: " + JSON.stringify(options));
+        //console.log("getRestHeader: " + JSON.stringify(options));
+        console.log("getRestHeader: " + options);
         return options;
     }
 }

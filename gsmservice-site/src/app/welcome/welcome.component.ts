@@ -7,9 +7,29 @@ import { AuthService, User } from '../auth/auth.service';
     styleUrls: ['./welcome.component.scss']
 })
 export class WelcomeComponent implements OnInit {
-    public usuarioLogueado;
-    constructor(private authService: AuthService) {}
-    ngOnInit(): void {
-        this.authService.getPrincipal().subscribe( userCurrent => this.usuarioLogueado = userCurrent);
+    currentUser: User;
+    constructor(private authService: AuthService) {
+        this.currentUser = this.authService.currentUserValue;
     }
+    ngOnInit(): void {
+        // this.getCurrentUser();
+        console.log("WelcomeComponent: " + JSON.stringify(this.currentUser));
+    }
+
+    getCurrentUser() {
+        console.log("WelcomeComponent getCurrentUser")
+        if (localStorage.getItem('auth_token')) {
+            this.authService.getPrincipal()
+			.subscribe( 
+				(response) => {
+					this.currentUser = this.authService.currentUserValue;
+					console.log("response : " + JSON.stringify(response));
+				},((error: any) => {
+					console.log(error);
+					//return of("Datos no encontrados");
+				})
+		    );
+        }
+		 
+	}
 }

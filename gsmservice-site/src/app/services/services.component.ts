@@ -1,7 +1,7 @@
 import { Component, OnInit,  } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, debounceTime, tap, finalize } from 'rxjs/operators';
+import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServicesService } from './services.service';
 import { PageEvent  } from '@angular/material/paginator';
 import * as _ from 'lodash';
@@ -31,6 +31,7 @@ export class ServicesComponent implements OnInit {
   limit: number;
   totalPages: number;
 
+  cosa: any;
   constructor(private fb: FormBuilder, private servicesService: ServicesService) {
     this.autocompleteSearchForm = this.fb.group({
       searchInput: this.fb.control({value: '', disabled: false})
@@ -38,22 +39,17 @@ export class ServicesComponent implements OnInit {
   }
   
   ngOnInit() {
-    
     this.getBrands();
     this.selectedBrand= "Samsung"; // dejar samsung por default pasar a un filtro que obtenga samsung 
-
-   
     this.autocompleteSearch();
   }
 
   autocompleteSearch() {
-    
     this.autocompleteSearchForm.get('searchInput').valueChanges
       .pipe(
         debounceTime(300),
         tap(() => this.isLoading = true),
-        switchMap((value: any) => this.getArticles({name: value})
-        .pipe(finalize(() => this.isLoading = false),))
+        switchMap((value: string) => {return this.getArticles({name: value});})
       )
       .subscribe();
   }
@@ -108,19 +104,21 @@ export class ServicesComponent implements OnInit {
     filter.enabled = true;
     console.log("filter: " + JSON.stringify(filter));
    
-    result = this.servicesService.getByQuery(filter).subscribe(
+    result = this.servicesService.getByQuery(filter)
+    .subscribe(
       (response) => {
         // console.log("dataSearch: " + JSON.stringify(response[0].resp.docs));
         this.totalDocs = response[0].resp.totalDocs;
         this.limit = response[0].resp.limit;
         this.totalPages = response[0].resp.totalPages;
         this.filteredNameSearch = response[0].resp.docs;
+        this.isLoading = false;
         // console.log("this.filteredNameSearch: " + this.filteredNameSearch);
 			},
-      catchError(error => {
-        // console.log(error);
-        return of("Datos no encontrados");
-      })
+      (error) => {
+        console.log("getArticles error: " + error);
+        return error;
+      }
     );
     return result; 
   }

@@ -12,9 +12,8 @@ export class RegExpConstants { // a utils constante
 }
 
 export class ArticlesService {
-    
-    static escapeRegExp(value: any) { // a utils servicio 
-        return value ? value.replace(RegExpConstants.ESCAPE_REGEX_REGEXP, '\\$&') : '';
+    static escapeRegExp(value: any) { // a utils servicio
+        return value ? value.replace(RegExpConstants.ESCAPE_REGEX_REGEXP, "\\$&") : "";
     }
 
     static getAll(brand: string, name: string, mpn: string, pagination: any): Promise<Array<any>> { // a filter hay que parcear
@@ -27,13 +26,13 @@ export class ArticlesService {
         };
         console.log("options: " + JSON.stringify(options));
         const filter: any = {};
-        
+
         if (brand) {
             filter.brand = brand;
         }
         if (name) {
             // let searchText = new RegExp(UtilsService.escapeRegExp(name), 'i'); // usar cuando se pase utils service
-            let searchText = new RegExp(this.escapeRegExp(name), 'i');
+            const searchText = new RegExp(this.escapeRegExp(name), "i");
             filter.name = {$regex: searchText};
         }
         if (mpn) {

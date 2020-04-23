@@ -2,18 +2,54 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { RestBaseService } from '../tools/rest.tools';
-import { catchError, map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { catchError, tap, map } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthService extends RestBaseService {
     public usuarioLogueado: Observable<User>;
-    // public usuarioL = new EventEmitter();
-    
+
+    // https://jasonwatmore.com/post/2019/08/06/angular-8-role-based-authorization-tutorial-with-example
+    // https://morioh.com/p/d7e15ce511a7
+    private currentUserSubject: BehaviorSubject<User>;
+    public currentUser: Observable<User>;
     private base_url = environment.backEndServerUrl;
 
     constructor(private http: HttpClient) {
         super();
+        // this.getGetPrincipal();
+        console.log("AuthService constructor");
+        
+        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+        this.currentUser = this.currentUserSubject.asObservable();
+        
+    }
+    // async getGetPrincipal() {
+    //     console.log("getGetPrincipal");
+    //     await this.getPrincipal().subscribe(data => {
+    //         console.log("aaaaa: " + JSON.stringify(data));            
+    //         return data;
+    //     });
+    // }
+
+    public get currentUserValue(): User {
+        console.log("currentUserValue");
+        return this.currentUserSubject.value;
+    }
+    getPrincipal(): Observable<User> {
+        console.log("getPrincipal");
+            return this.http.get<User>(this.base_url + 'users/current', this.getRestHeader())
+                .pipe(
+                    tap(
+                        (data: User) => {
+                            console.log("getPrincipal data: " + JSON.stringify(data));
+                            this.currentUserSubject.next(data);
+                            console.log("currentUserValue(): " + JSON.stringify(this.currentUserValue));
+                            return data;
+                        }
+                    ),
+                    catchError(null)
+                );
     }
 
     login(username: string, password: string): Observable<User> {
@@ -31,15 +67,14 @@ export class AuthService extends RestBaseService {
             ).pipe(
                 tap(
                     (response: any) => {
-                        console.log("login response: " + JSON.stringify(response.token));
+                        console.log("login response: " + JSON.stringify(response));
                         localStorage.setItem('auth_token', response.token);
+                        localStorage.setItem('currentUser', JSON.stringify(response));
                         console.log("login localStorage: " + JSON.stringify(localStorage));
-                        return this.getPrincipal();
                     },
                     error => {
                         console.log("error: " + JSON.stringify(error));
                         localStorage.removeItem('auth_token');
-                        this.usuarioLogueado = undefined;
                         this.handleError;
                     }
                 )
@@ -79,45 +114,16 @@ export class AuthService extends RestBaseService {
                 tap(
                     () => {
                         localStorage.removeItem('auth_token');
-                        this.usuarioLogueado = undefined;
+                        this.currentUserSubject.next(null);
                         return '';
                     },
-                    error => {
+                    () => {
                         localStorage.removeItem('auth_token');
-                        this.usuarioLogueado = undefined;
+                        this.currentUserSubject.next(null);
                         this.handleError;
                     }
                 )
             );
-    }
-
-    getPrincipal(): Observable<any> {
-        console.log("getPrincipal");
-        console.log("this.usuarioLogueado: " + JSON.stringify(this.usuarioLogueado));
-        console.log("localStorage: " + localStorage.getItem("auth_token") + " " + localStorage.length);
-        if (this.usuarioLogueado) {
-            console.log("getPrincipal if: " + JSON.stringify(this.usuarioLogueado));
-
-            return this.usuarioLogueado;
-        } else {
-            console.log("getPrincipal else");
-            return this.usuarioLogueado = this.http.get<User>(this.base_url + 'users/current', this.getRestHeader())
-            .pipe(
-                tap(
-                    (data: User) => {
-                        console.log(" getPrincipal data: " + JSON.stringify(data));
-                        
-                        return data;
-                    },
-                    (error) => {
-                        console.log("error: " + JSON.stringify(error));
-                        localStorage.removeItem('auth_token');
-                        this.usuarioLogueado = undefined;
-                        this.handleError;
-                    }
-                )
-            );
-        }
     }
 
     newUser(value: RegistrarUsuario): Observable<User> {

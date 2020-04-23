@@ -12,6 +12,7 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { ObserversModule } from '@angular/cdk/observers';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ToastrModule } from 'ngx-toastr';
 
 import { CustomMaterialModule } from './material.modules'
 
@@ -57,7 +58,8 @@ import { SettingsService } from './settings/settings.service';
         BrowserAnimationsModule,
         HttpClientModule,
         ObserversModule,
-        PlatformModule
+        PlatformModule,
+        ToastrModule.forRoot()
     ],
     providers: [AuthGuardService, AuthService, ArticlesService, ServicesService, SettingsService],
     bootstrap: [AppComponent]

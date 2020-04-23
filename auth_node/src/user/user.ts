@@ -14,6 +14,7 @@ export interface IUser extends Document {
   updated: Date;
   created: Date;
   enabled: Boolean;
+  token: string;
   authenticate: Function;
   setStringPassword: Function;
   grant: Function;

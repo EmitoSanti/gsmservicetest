@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import * as express from "express"; // revisar si esta bien .. creeria que si por el tipado de los parametros
 import * as error from "../server/error";
-import { ArticlesService } from "./articles.service"; // ver esto falla index.ts creo
+import { ArticlesService } from "./articles.service";
 
 // interface ISessionRequest extends express.Request { para los req
 //   user: Payload;

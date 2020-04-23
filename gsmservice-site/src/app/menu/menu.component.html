@@ -1,4 +1,4 @@
-<div id="menu" *ngIf="usuarioLogueado">
+<div id="menu" *ngIf="currentUser">
 	<mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center" >
 		<button mat-button color="primary">
 			<a routerLink="/"><span>{{ title }}</span></a>
@@ -8,7 +8,7 @@
 				<a routerLink="/services">Servicios</a> <!-- buscador de servicios-->
 			</button>
 		</div>
-		<div class="fix-width" fxLayout="row" fxLayoutAlign="space-around center" *ngIf="usuarioLogueado.permissions[0] == 'admin'">
+		<div class="fix-width" fxLayout="row" fxLayoutAlign="space-around center" *ngIf="currentUser.permissions[0] == 'admin'">
 			<button mat-button color="primary">
 				<a routerLink="/settings">Settings</a> <!-- Settings-->
 			</button>
@@ -17,7 +17,7 @@
 	</mat-toolbar>
 	<mat-menu #menu="matMenu">
 		<div (mouseleave)="menuTrigger.closeMenu()">
-			<button mat-menu-item (click)="navigateMenu('users')" *ngIf="usuarioLogueado.permissions[0] == 'admin'">
+			<button mat-menu-item (click)="navigateMenu('users')" *ngIf="currentUser.permissions[0] == 'admin'">
 				Usuarios
 			</button>
 			<button mat-menu-item (click)="navigateMenu('info')">

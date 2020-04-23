@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../auth.service';
 import { BasicFromGroupController } from '../../tools/error.form';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
     selector: 'login',
@@ -12,7 +13,7 @@ import { BasicFromGroupController } from '../../tools/error.form';
 export class LoginComponent extends BasicFromGroupController {
     hide = true;
     loginForm: FormGroup;
-    public usuarioLogueado;
+
     constructor(private authService: AuthService, private router: Router) {
         super();
     }
@@ -25,20 +26,19 @@ export class LoginComponent extends BasicFromGroupController {
 
     get user() { return this.loginForm.get('user'); }
     get password() { return this.loginForm.get('password'); }
-    async submitForm() {
+    submitForm() {
         this.cleanRestValidations();
-        this.usuarioLogueado = await this.authService.login(this.loginForm.get('user').value, this.loginForm.get('password').value)
-            .subscribe(
-                () => { 
-                    this.authService.getPrincipal().subscribe(
-                        (data: User) => { // Success
-                            return data;
-                        },
-                        (error) => {
-                            console.error(error);
-                        }
-                    );
-                    this.router.navigate(['/']);
+        this.authService.login(this.loginForm.get('user').value, this.loginForm.get('password').value)
+        .pipe(debounceTime(3000), )
+        .subscribe(
+                (response) => {
+                    console.log("apa:" + JSON.stringify(response));
+                    if(response){
+                        this.router.navigate(['/'])
+                        .then(() => {
+                            window.location.reload(); // arreglo provisorio
+                        });
+                    }
                 },
                 (error) => {
                     this.processRestValidations(error);

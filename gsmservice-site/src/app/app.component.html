@@ -1,11 +1,90 @@
-<div id="app">
-    <app-menu></app-menu> <!-- Toolbar -->
-    <router-outlet></router-outlet> <!-- la vista que renderiza cuando se rutea-->
-    <footer fxLayout="column" fxLayoutAlign="start center" *ngIf="false">
-        Footer
-        https://github.com/SinghDigamber/angular-material-login-template
-        https://github.com/angular/flex-layout/wiki/API-Documentation
-        https://tburleson-layouts-demos.firebaseapp.com/#/docs
-    </footer>
-</div>
+<div style="height: 100vh;" id="app">
+    <div *ngIf="currentUser">
+        <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center"  >
+            <mat-toolbar-row >
+                <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
+                <mat-icon>menu</mat-icon>
+                </button>
+                <div fxShow="true" fxHide.lt-md="true" color="primary" fxLayout="row" fxLayoutAlign="space-between center" >
+                    <button mat-button color="primary">
+                        <a routerLink="/"><span>{{ title }}</span></a>
+                    </button>
+                    <div class="fix-width" fxLayout="row" fxLayoutAlign="space-around center">
+                        <button mat-button color="primary">
+                            <a routerLink="/services">Servicios</a> <!-- buscador de servicios-->
+                        </button>
+                    </div>
+                    <div class="fix-width" fxLayout="row" fxLayoutAlign="space-around center" >
+                        <button mat-button color="primary">
+                            <a routerLink="/settings">Settings</a> <!-- Settings-->
+                        </button>
+                    </div>
+                    <button mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">Perfil</button>
+                    <mat-menu #menu="matMenu">
+                        <div (mouseleave)="menuTrigger.closeMenu()">
+                            <button mat-menu-item (click)="navigateMenu('users')">
+                                Usuarios
+                            </button>
+                            <button mat-menu-item (click)="navigateMenu('info')">
+                                Info
+                            </button>
+                            <button mat-menu-item (click)="navigateMenu('password')">
+                                New Password
+                            </button>
+                            <button mat-menu-item (click)="logout()">
+                                Logout
+                            </button>
+                        </div>
+                    </mat-menu>
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+    
+    
+    <mat-sidenav-container fxFlexFill>
+        <mat-sidenav #sidenav >
+            <mat-nav-list>
+                <a href="#" mat-list-item>
+                    Notifications
+                </a>
+                <a (click)="sidenav.toggle()" mat-list-item>
+                    <mat-icon>close</mat-icon> Close
+                </a>
+            </mat-nav-list>
+        </mat-sidenav>
+        <mat-sidenav-content fxFlexFill>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+<footer fxLayout="column" fxLayoutAlign="start center" *ngIf="false">
+    Footer
+    https://github.com/SinghDigamber/angular-material-login-template
+    https://github.com/angular/flex-layout/wiki/API-Documentation
+    https://tburleson-layouts-demos.firebaseapp.com/#/docs
+    https://codinglatte.com/posts/angular/responsive-navbar-angular-flex-layout/
+
+
+    https://jasonwatmore.com/
+</footer>
 <!-- https://github.com/SinghDigamber/angular-material-login-template -->
+
+
+<!--
+    http://isd-soft.com/tech_blog/accessing-google-apis-using-service-account-node-js/
+https://developers.google.com/sheets/api/guides/authorizing
+https://github.com/gsuitedevs/node-samples/blob/master/sheets/snippets/snippets.js
+https://github.com/googleapis/google-api-nodejs-client
+https://developers.google.com/sheets/api/quickstart/nodejs
+https://github.com/googleapis/google-api-nodejs-client/tree/master/samples
+https://github.com/devfsalvadori/googleapi/tree/6dc54cdd99579d8085f61281abec97c4c27a301c/example_03
+https://gist.github.com/patarapolw/8af83d09ccf3e33227e717af2e49ec22
+https://github.com/PanupongDeve/nodejs-googlesheet/blob/17c7bc30606a0d9678f70ba7ee6425e11e7508bd/GoogleSheet.js
+https://www.youtube.com/watch?v=MiPpQzW_ya0
+https://www.woolha.com/tutorials/node-js-using-google-sheets-api-with-oauth-2
+https://stackoverflow.com/questions/52369549/node-js-sheets-v4-api-valuesbatchget-function-ignores-ranges
+https://sites.google.com/site/scriptsexamples/learn-by-example/google-sheets-api/filters
+https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get
+https://medium.com/@bretcameron/how-to-use-the-google-drive-api-with-javascript-57a6cc9e5262
+-->

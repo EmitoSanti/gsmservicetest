@@ -1,4 +1,6 @@
-
+Para levantar el front-end ir al directorio "gsmservice-site" en consola y hacer "npm install" (solo una vez para instalar las dependencias).
+Luego en el mismo directorio, ya instalada las despendecias de npm_module hacer en terminal "npm start".
+La web se hostea en https://localhost:4200
 
 generar componente => ng generate service nombreComponente 
 Genera al carpeta con el nomnre del componente y con los archivos necesarios 

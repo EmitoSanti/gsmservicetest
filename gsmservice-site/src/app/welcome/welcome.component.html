@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutAlign="center center" id="welcome">
     <mat-card fxLayout="column" fxLayoutAlign="center center">
         <mat-card-header fxLayout="column" fxLayoutAlign="center center">
-            <mat-card-title>GSM service</mat-card-title>
+            <mat-card-title>GSM service </mat-card-title>
             <mat-card-subtitle>Buscador </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
@@ -10,9 +10,9 @@
                 es decir que bloque todos los de una marca o modelo o un mpn especifico
             -->
         </mat-card-content>
-        <mat-card-actions *ngIf="!usuarioLogueado" fxLayout="row" fxLayoutAlign="center center">
+        <mat-card-actions *ngIf="!currentUser" fxLayout="row" fxLayoutAlign="center center">
             <button mat-stroked-button color="accent" routerLink="/login">Login </button>
             <button mat-stroked-button color="accent" routerLink="/registrarse">Registrarse</button>
         </mat-card-actions>
-    </mat-card>    
+    </mat-card>
 </div>

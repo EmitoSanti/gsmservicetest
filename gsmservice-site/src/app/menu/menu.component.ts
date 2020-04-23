@@ -9,16 +9,17 @@ import { MatMenuTrigger } from '@angular/material/menu';
 	styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
+	public isLogin: boolean = false;
 	title = 'GSM service';
 	@ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
-	public usuarioLogueado;
+	public currentUser: User;
 	
-	constructor(private authService: AuthService, private router: Router) {}
+	constructor(private authService: AuthService, private router: Router) {
+		
+		this.currentUser = this.authService.currentUserValue;
+		this.isLogin = !this.authService.currentUserValue;
+	}
 	ngOnInit(): void {
-		if (localStorage.getItem('auth_token')) {
-      console.log("MenuComponent localStorage: " + localStorage.getItem("auth_token") + " " + localStorage.length);
-			this.authService.getPrincipal().subscribe( userCurrent => this.usuarioLogueado = userCurrent);
-		}
 	}
 
 	navigateMenu(tag: string) {

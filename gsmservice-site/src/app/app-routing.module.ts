@@ -13,9 +13,9 @@ import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
     // { path: '', redirectTo: '/', pathMatch: 'full' },
-    { path: '', component: WelcomeComponent, children: [{ path: 'menu', component: MenuComponent}], runGuardsAndResolvers: 'always' },
+    { path: '', component: WelcomeComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
     { path: 'login', component: LoginComponent, runGuardsAndResolvers: 'always' },
-    { path: 'welcome', component: WelcomeComponent, children: [{ path: 'menu', component: MenuComponent}], canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'welcome', component: WelcomeComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
     { path: 'info', component: InfoComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
     { path: 'password', component: NewPasswordComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
     { path: 'registrarse', component: NewUserComponent, runGuardsAndResolvers: 'always' },
