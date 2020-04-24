@@ -13,7 +13,7 @@ interface ISessionRequest extends express.Request {
 
 export class UsersController {
   static current(req: ISessionRequest, res: express.Response) {
-    console.log("current: "+ req.user.user_id);
+    console.log("current: " + req.user.user_id);
     UsersService.currentUser(req.user.user_id)
       .then((user: IUser)  => {
         console.log("UsersController current: " + JSON.stringify(user));
@@ -28,7 +28,7 @@ export class UsersController {
   }
 
   static login(req: express.Request, res: express.Response) {
-    console.log("login UsersController: "  +JSON.stringify(req.body));
+    console.log("login UsersController: " + JSON.stringify(req.body));
     let user: IUser;
     UsersService.login(req.body)
       .then((userlogin: IUser) => {
@@ -97,7 +97,7 @@ export class UsersController {
       })
       .then((validate: any) => {
         console.log("validate: " + JSON.stringify(validate));
-        return UsersService.changePassword(req.user.user_id, req.body)
+        return UsersService.changePassword(req.user.user_id, req.body);
       })
       .then((algo: any) => {
         console.log("algo: " + JSON.stringify(algo));

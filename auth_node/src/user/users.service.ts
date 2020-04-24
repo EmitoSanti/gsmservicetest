@@ -144,8 +144,7 @@ export class UsersService {
     static async changePassword(userId: string, body: ChangePasswordRequest): Promise<void> {
         console.log("Service changePassword");
         try {
-            const user = await User.findByIdAndUpdate(userId, 
-                {$set: {password: pbkdf2Sync(body.newPassword, conf.passwordSalt, 10000, 64, "SHA1").toString("base64")}}).exec();
+            const user = await User.findByIdAndUpdate(userId, {$set: {password: pbkdf2Sync(body.newPassword, conf.passwordSalt, 10000, 64, "SHA1").toString("base64")}}).exec();
             if (!user) {
                 throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
             }
@@ -207,7 +206,7 @@ export class UsersService {
             if (!permissions || !(permissions instanceof Array)) {
                 throw error.newArgumentError("permissions", "Invalid value");
             }
-            let user = await User.findByIdAndUpdate(userId, {$set: {permissions: permissions}}).exec();
+            const user = await User.findByIdAndUpdate(userId, {$set: {permissions: permissions}}).exec();
             if (!user) {
                 throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
             }
@@ -223,7 +222,7 @@ export class UsersService {
             if (!permissions || !(permissions instanceof Array)) {
                 throw error.newArgumentError("permissions", "Invalid value");
             }
-            let user = await User.findByIdAndUpdate(userId, {$unset: "permissions"}).exec();
+            const user = await User.findByIdAndUpdate(userId, {$unset: "permissions"}).exec();
             if (!user) {
                 throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
             }
@@ -236,7 +235,7 @@ export class UsersService {
     static async enableUser(userId: string): Promise<void> {
         console.log("Service enableUser");
         try {
-            let user = await User.findByIdAndUpdate(userId, {$set: {enabled: true}}).exec();
+            const user = await User.findByIdAndUpdate(userId, {$set: {enabled: true}}).exec();
             if (!user) {
                 throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
             }
@@ -249,7 +248,7 @@ export class UsersService {
     static async disableUser(userId: string): Promise<void> {
         console.log("Service disableUser");
         try {
-            let user = await User.findByIdAndUpdate(userId, {$set: {enabled: false}}).exec();
+            const user = await User.findByIdAndUpdate(userId, {$set: {enabled: false}}).exec();
             if (!user) {
                 throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
             }
