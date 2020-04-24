@@ -3,13 +3,13 @@ export const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 export const SPREAD_SHEET_ID = "1po59n5wlRkBCdFdNJCR8z5tkAMCra2qCMxdVBodgbpw";
 export const VERSION_GOOGLE_API = "v4";
 export const SHEET_NAME = "Sheet1";
-export const RANGE_EASY = `${SHEET_NAME}!A:I`; // column start:column end
+export const RANGE_EASY = `${SHEET_NAME}!A3:N`; // column start:column end
 export const RANGE_HARD = {
     sheetId: 0, // index sheet
-    startRowIndex: 0, // index start row // se puede borrar para que sea infinita
+    startRowIndex: 2, // index start row // se puede borrar para que sea infinita
     // endRowIndex: 8, // index end row // se puede borrar para que sea infinita
     startColumnIndex: 0, // index start column // se puede borrar para que sea infinita
-    endColumnIndex: 8 // index end column // se puede borrar para que sea infinita
+    endColumnIndex: 13 // index end column // se puede borrar para que sea infinita
   };
 
 /* Auth Google */

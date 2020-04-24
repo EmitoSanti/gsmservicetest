@@ -34,7 +34,7 @@ export class ServicesComponent implements OnInit {
   cosa: any;
   constructor(private fb: FormBuilder, private servicesService: ServicesService) {
     this.autocompleteSearchForm = this.fb.group({
-      searchInput: this.fb.control({value: '', disabled: false})
+      'searchInput': this.fb.control({value: '', disabled: false})
     });
   }
   
@@ -65,8 +65,8 @@ export class ServicesComponent implements OnInit {
 
 		this.servicesService.getBrands(filter).subscribe(
       (response) => {
-        console.log("brands: " + JSON.stringify(response[0].resp.docs));
-        this.brands = response[0].resp.docs;
+        console.log("brands: " + JSON.stringify(response.resp.docs));
+        this.brands = response.resp.docs;
         this.getArticles(undefined);
 			},
 			(error) => {
@@ -74,23 +74,6 @@ export class ServicesComponent implements OnInit {
 			}
 		);
   }
-
-  // dataSearch: any = [];
-  // onGetTaxList(data: any) {
-  //   this.dataSearch = data;
-  //   // console.log("onGetTaxList: " + JSON.stringify(this.dataSearch));
-  //   this.filteredNameSearch = this.controlName.valueChanges
-  //     .pipe(
-  //       startWith(''),
-  //       map(value => value.length >= 1 ? this._filter(value) : [])
-  //     );
-  // }
-  // private _filter(value: string) {
-  //   const filterValue = value.toLowerCase();
-  //   console.log("filterValue: " + filterValue);
-  //   return this.dataSearch.filter((dataSearch: any) => dataSearch.name.toLowerCase().includes(filterValue));
-  // }
-
 
   getArticles(value: any): Observable<any> {
     console.log("getArticles: " + JSON.stringify(value));
@@ -108,10 +91,10 @@ export class ServicesComponent implements OnInit {
     .subscribe(
       (response) => {
         // console.log("dataSearch: " + JSON.stringify(response[0].resp.docs));
-        this.totalDocs = response[0].resp.totalDocs;
-        this.limit = response[0].resp.limit;
-        this.totalPages = response[0].resp.totalPages;
-        this.filteredNameSearch = response[0].resp.docs;
+        this.totalDocs = response.resp.totalDocs;
+        this.limit = response.resp.limit;
+        this.totalPages = response.resp.totalPages;
+        this.filteredNameSearch = response.resp.docs;
         this.isLoading = false;
         // console.log("this.filteredNameSearch: " + this.filteredNameSearch);
 			},
@@ -121,5 +104,9 @@ export class ServicesComponent implements OnInit {
       }
     );
     return result; 
+  }
+
+  refreshFilters() {
+    this.getBrands();
   }
 }

@@ -7,8 +7,8 @@ import * as ip from 'ip';
 // console.log("ip: " + myIp);
 export const environment = {
     production: false,
-    backEndServerLocalhost : 'http://localhost:3000/v1/',
-    backEndServerUrl : 'http://192.168.1.165:3000/v1/',
+    backEndServerLocalhost : 'http://ip:3000/v1/',
+    backEndServerUrl : 'http://localhost:3000/v1/',
     // backEndServerUrl : `http://${myIp}:3000/v1/`
 
 };

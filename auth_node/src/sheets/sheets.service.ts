@@ -132,35 +132,61 @@ export class SheetsService {
           console.log("The API returned an error: " + err);
           return reject(err);
         }
-        const rows = res.data.values;
-        if (rows) {
+        const columns = res.data.values;
+        if (columns) {
           // console.log("Datos: " + JSON.stringify(rows));
-          const allRows = rows.map(function(row: any) { // de any a IArticle
+          const allRows = columns.map(function(column: any) { // de any a IArticle
             // console.log("marca: " + `${row[0]}` + "   modelo: " + `${row[1]}` + "   mpn: " + `${row[2]}`);
             return {
-              brand: row[0],
-              name: row[1],
-              mpn: row[2],
+              brand: column[0],
+              name: column[1],
+              mpn: column[2],
               services: [
                 {
-                  name: "liberar",
-                  value: row[4]
+                  name: "liberar o base",
+                  value: column[4]
                 },
                 {
                   name: "full",
-                  value: row[5]
+                  value: column[5]
                 },
                 {
                   name: "cuenta google",
-                  value: row[6]
+                  value: column[6]
                 },
                 {
-                  name: "cuenta samsung",
-                  value: row[7]
+                  name: "cuenta propietaria",
+                  value: column[7]
                 },
                 {
                   name: "software",
-                  value: row[8]
+                  value: column[8]
+                },
+                {
+                  name: "resetear patron",
+                  value: column[8]
+                },
+                {
+                  name: "fix touch",
+                  value: column[8]
+                }
+              ],
+              additionalServices: [
+                {
+                  name: "lib",
+                  value: column[10]
+                },
+                {
+                  name: "full",
+                  value: column[11]
+                },
+                {
+                  name: "cuenta google",
+                  value: column[12]
+                },
+                {
+                  name: "cuenta propietaria",
+                  value: column[13]
                 }
               ]
             };

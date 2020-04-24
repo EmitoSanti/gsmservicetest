@@ -16,7 +16,7 @@ export class ArticlesService {
         return value ? value.replace(RegExpConstants.ESCAPE_REGEX_REGEXP, "\\$&") : "";
     }
 
-    static getAll(brand: string, name: string, mpn: string, pagination: any): Promise<Array<any>> { // a filter hay que parcear
+    static getAll(brand: string, name: string, mpn: string, pagination: any): Promise<any> { // a filter hay que parcear
         console.log("ArticlesService getAll");
         console.log("pagination: " + JSON.stringify(pagination));
         // https://github.com/aravindnc/mongoose-aggregate-paginate-v2/blob/master/tests/index.js
@@ -47,6 +47,7 @@ export class ArticlesService {
             mpn: {$last: "$mpn"},
             brand: {$last: "$brand"},
             services: {$last: "$services"},
+            additionalServices: {$last: "$additionalServices"},
             enabled: {$last: "$enabled"}
         });
         aggregate.project({
@@ -54,6 +55,7 @@ export class ArticlesService {
             "name": 1,
             "brand": 1,
             "services": 1,
+            "additionalServices": 1,
             "enabled": 1
         });
         aggregate.sort({"name": 1, "mpn": 1}); // revisar sorting a nivel de mpn
@@ -64,12 +66,12 @@ export class ArticlesService {
                     return reject(err);
                 }
                 console.log("resp: " + JSON.stringify(resp));
-                return resolve([{resp: resp}]);
+                return resolve({resp: resp});
             });
         });
     }
 
-    static getAllBrands(filter: any): Promise<Array<any>> { // a filter hay que parcear
+    static getAllBrands(filter: any): Promise<any> { // a filter hay que parcear
         // console.log("getAllBrands: " + JSON.stringify(filter));
         // https://github.com/aravindnc/mongoose-aggregate-paginate-v2/blob/master/tests/index.js
         const options = {
@@ -99,7 +101,7 @@ export class ArticlesService {
                     return reject(err);
                 }
                 console.log("resp: " + JSON.stringify(resp));
-                return resolve([{resp: resp}]);
+                return resolve({resp: resp});
             });
         });
     }

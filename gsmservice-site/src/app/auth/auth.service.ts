@@ -52,11 +52,11 @@ export class AuthService extends RestBaseService {
                 );
     }
 
-    login(username: string, password: string): Observable<User> {
+    login(user): Observable<User> {
         console.log("login");
         const data = {
-            login: username,
-            password: password
+            login: user.user,
+            password: user.password
         };
         localStorage.removeItem('auth_token');
         return this.http
@@ -75,6 +75,7 @@ export class AuthService extends RestBaseService {
                     error => {
                         console.log("error: " + JSON.stringify(error));
                         localStorage.removeItem('auth_token');
+                        localStorage.removeItem('currentUser');
                         this.handleError;
                     }
                 )
@@ -82,15 +83,15 @@ export class AuthService extends RestBaseService {
             // .pipe(catchError(this.handleError)); //this.handleError.bind(this)
     }
 
-    changePassword(currentPassword: string, newPassword: string): Observable<void> {
+    changePassword(value: any): Observable<void> {
         const data = {
-            currentPassword: currentPassword,
-            newPassword: newPassword
+            currentPassword: value.currentPassword,
+            newPassword: value.newPassword
         };
 
         return this.http
             .post<User>(
-                this.base_url + 'user/signin',
+                this.base_url + 'user/password',
                 data,
                 this.getRestHeader()
             ).pipe(
@@ -107,19 +108,23 @@ export class AuthService extends RestBaseService {
         );
     }
 
-    logout() {
+    logout(): Observable<any> {
         return this.http
             .get(this.base_url + 'user/signout', this.getRestHeader())            
             .pipe(
                 tap(
                     () => {
                         localStorage.removeItem('auth_token');
+                        localStorage.removeItem('currentUser');
                         this.currentUserSubject.next(null);
+                        this.currentUserSubject.unsubscribe();
+                        console.log("logout");
                         return '';
                     },
                     () => {
                         localStorage.removeItem('auth_token');
                         this.currentUserSubject.next(null);
+                        this.currentUserSubject.unsubscribe();
                         this.handleError;
                     }
                 )
@@ -144,6 +149,7 @@ export class AuthService extends RestBaseService {
                     error => {
                         console.log("error: " + JSON.stringify(error));
                         localStorage.removeItem('auth_token');
+                        localStorage.removeItem('currentUser');
                         this.usuarioLogueado = undefined;
                         this.handleError;
                     }

@@ -21,8 +21,7 @@ export class NewPasswordComponent extends BasicFromGroupController {
 
     constructor(private authService: AuthService, private router: Router) {
         super();
-        this.form.get('login').setValue(this.authService.usuarioLogueado); // estaba this.authService.usuarioLogueado.login
-        console.log("que hay : " + JSON.stringify(this.form.get('login').setValue(this.authService.usuarioLogueado)));
+        this.form.get('login').setValue(this.authService.currentUserValue.login);
     }
 
     validarPasswords(group: FormGroup) {
@@ -41,16 +40,13 @@ export class NewPasswordComponent extends BasicFromGroupController {
     }
 
     submitForm() {
-        this.cleanRestValidations();
-
         this.authService
             .changePassword(
-                this.form.get('currentPassword').value,
-                this.form.get('newPassword').value
+                this.form.value
             )
             .subscribe(
-                () => { 
-                    this.router.navigate(['/']);
+                () => {
+                    this.cleanRestValidations();
                 },
                 (error) => {
                     this.processRestValidations(error);
