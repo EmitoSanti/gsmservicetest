@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { BasicFromGroupController } from '../../tools/error.form';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
     selector: 'new-user',
@@ -18,22 +19,28 @@ export class NewUserComponent extends BasicFromGroupController {
 
     constructor(private authService: AuthService, private router: Router) {
         super();
-     }
+    }
 
     submitForm() {
-        this.cleanRestValidations();
         console.log("submitForm");
         this.authService
             .newUser({
                 name: this.form.get('name').value,
                 login: this.form.get('login').value,
                 password: this.form.get('password').value
-            })         
+            })
+            .pipe(debounceTime(3000), )
             .subscribe(
-                () => { 
-                    this.router.navigate(['/']);
+                () => {
+                    this.cleanRestValidations();
+                    this.router.navigated = false;
+                    this.router.navigate(['/'])
+                        .then(() => {
+                            window.location.reload(); // arreglo provisorio
+                        });
                 },
                 (error) => {
+                    this.cleanRestValidations();
                     this.processRestValidations(error);
                 }
             );

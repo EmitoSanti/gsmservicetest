@@ -1,3 +1,10 @@
+Para levantar el back-end ir al directorio "auth-node" en consola y hacer "npm install" (solo una vez para instalar las dependencias).
+Luego en el mismo directorio, ya instalada las despendecias de npm_module hacer en terminal "npm start".
+La web se hostea en https://localhost:3000/
+
+
+
+
 https://console.cloud.google.com/
 
 

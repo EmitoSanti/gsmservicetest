@@ -13,7 +13,7 @@ import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
     // { path: '', redirectTo: '/', pathMatch: 'full' },
-    { path: '', component: WelcomeComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: '', component: WelcomeComponent, runGuardsAndResolvers: 'always' },
     { path: 'login', component: LoginComponent, runGuardsAndResolvers: 'always' },
     { path: 'welcome', component: WelcomeComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
     { path: 'info', component: InfoComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
@@ -26,7 +26,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { onSameUrlNavigation:  "reload",  enableTracing: false})],
+    imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload',  enableTracing: false})],
     exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -13,8 +13,8 @@
     <!-- Autocomplete Search -->
     <form class="example-form" [formGroup]="autocompleteSearchForm">
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Buscar por Modelo" formControlName="searchInput" [matAutocomplete]="auto" 
-          aria-label="modelo">
+        <input type="text" matInput placeholder="Buscar por Modelo" formControlName="searchInput" 
+          [matAutocomplete]="auto" aria-label="modelo">
       </mat-form-field>
       
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
@@ -28,6 +28,8 @@
         </ng-container>
       </mat-autocomplete>
     </form>
+    {{autocompleteSearchForm.get('searchInput').value}}
+    <button mat-stroked-button color="accent" (click)="refreshFilters()">Refresh</button>
   </div>
   
 
@@ -56,7 +58,7 @@ https://tburleson-layouts-demos.firebaseapp.com/#/responsive-->
           <span>{{celu.name}}</span>
         </mat-card-title>
       </mat-card-header>
-      <mat-card-content fxLayout="row" fxLayoutAlign="space-between start">
+      <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
         <div>
           <ul class="list-service" *ngFor="let service of celu.services">
             <li *ngIf="service.value">

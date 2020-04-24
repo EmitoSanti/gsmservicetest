@@ -7,6 +7,11 @@ import * as mongoosePaginate from "mongoose-paginate";
 // import * as aggregatePaginate from "mongoose-aggregate-paginate-v2";
 const aggregatePaginate  = require("mongoose-aggregate-paginate-v2");
 
+export interface IAdditionalervices extends Document {
+  name: string;
+  value: string;
+  description: string;
+}
 export interface IServices extends Document {
   name: string;
   value: string;
@@ -17,6 +22,7 @@ export interface IArticle extends Document {
   brand: string;
   name: string;
   services: IServices[];
+  additionalServices: IAdditionalervices[];
   created: Date;
   updated: Date;
   enabled: Boolean;
@@ -44,6 +50,22 @@ const ArticleSchema = new Schema({
     required: "Cell Phone Model is required"
   },
   services: [
+    {
+      name: {
+        type: String,
+        trim: true
+      },
+      value: {
+        type: String,
+        trim: true
+      },
+      description: {
+        type: String,
+        trim: true
+      }
+    }
+  ],
+  additionalServices: [
     {
       name: {
         type: String,

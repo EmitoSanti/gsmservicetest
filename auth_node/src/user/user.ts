@@ -11,6 +11,7 @@ export interface IUser extends Document {
   login: string;
   password: string;
   permissions: string[];
+  lastLogin: Date;
   updated: Date;
   created: Date;
   enabled: Boolean;
@@ -52,6 +53,10 @@ const UserSchema = new Schema({
     default: ["user"]
   },
   updated: {
+    type: Date,
+    default: Date.now()
+  },
+  lastLogin: {
     type: Date,
     default: Date.now()
   },

@@ -14,7 +14,7 @@
                             <a routerLink="/services">Servicios</a> <!-- buscador de servicios-->
                         </button>
                     </div>
-                    <div class="fix-width" fxLayout="row" fxLayoutAlign="space-around center" >
+                    <div class="fix-width" fxLayout="row" fxLayoutAlign="space-around center" *ngIf="currentUser.permissions[0] == 'admin'">
                         <button mat-button color="primary">
                             <a routerLink="/settings">Settings</a> <!-- Settings-->
                         </button>
@@ -22,7 +22,7 @@
                     <button mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">Perfil</button>
                     <mat-menu #menu="matMenu">
                         <div (mouseleave)="menuTrigger.closeMenu()">
-                            <button mat-menu-item (click)="navigateMenu('users')">
+                            <button mat-menu-item (click)="navigateMenu('users')" *ngIf="currentUser.permissions[0] == 'admin'">
                                 Usuarios
                             </button>
                             <button mat-menu-item (click)="navigateMenu('info')">
@@ -45,9 +45,36 @@
     <mat-sidenav-container fxFlexFill>
         <mat-sidenav #sidenav >
             <mat-nav-list>
-                <a href="#" mat-list-item>
-                    Notifications
-                </a>
+                <button mat-button color="primary">
+                    <a routerLink="/"><span>{{ title }}</span></a>
+                </button>
+                <div class="fix-width" fxLayout="row" fxLayoutAlign="space-around center">
+                    <button mat-button color="primary">
+                        <a routerLink="/services">Servicios</a> <!-- buscador de servicios-->
+                    </button>
+                </div>
+                <div class="fix-width" fxLayout="row" fxLayoutAlign="space-around center" *ngIf="currentUser.permissions[0] == 'admin'">
+                    <button mat-button color="primary">
+                        <a routerLink="/settings">Settings</a> <!-- Settings-->
+                    </button>
+                </div>
+                <button mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">Perfil</button>
+                <mat-menu #menu="matMenu">
+                    <div (mouseleave)="menuTrigger.closeMenu()">
+                        <button mat-menu-item (click)="navigateMenu('users')" *ngIf="currentUser.permissions[0] == 'admin'">
+                            Usuarios
+                        </button>
+                        <button mat-menu-item (click)="navigateMenu('info')">
+                            Info
+                        </button>
+                        <button mat-menu-item (click)="navigateMenu('password')">
+                            New Password
+                        </button>
+                        <button mat-menu-item (click)="logout()">
+                            Logout
+                        </button>
+                    </div>
+                </mat-menu>
                 <a (click)="sidenav.toggle()" mat-list-item>
                     <mat-icon>close</mat-icon> Close
                 </a>

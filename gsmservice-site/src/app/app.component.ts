@@ -13,7 +13,7 @@ import { catchError, take, first } from 'rxjs/operators';
 export class AppComponent {
   title = 'GSM service';
 	@ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
-	 usuarioLogueado: User;
+	usuarioLogueado: User;
 	currentUser: User;
 	permissionsUser: string[];
 	//usuarioLogueado = this.authService.usuarioLogueado;
@@ -66,8 +66,10 @@ export class AppComponent {
 	}
 
   logout() {
+		localStorage.removeItem('currentUser');
 		this.authService.logout().subscribe(
 			() => { // Success
+				localStorage.removeItem('currentUser');
 				this.router.navigate(['/login']);
 				location.reload(); // arreglar porque esto es un parche cuando se desloguea debe desaparecer el componenete menu
 			}

@@ -9,11 +9,29 @@ import { AuthService, User } from '../auth.service';
 })
 export class InfoComponent implements OnInit {
     token: string;
-    public loggedInUser;
+    currentUser: User;
 
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private authService: AuthService, private router: Router) {
+        this.currentUser = this.authService.currentUserValue;
+    }
     ngOnInit(): void {
         this.token = 'bearer ' + localStorage.getItem('auth_token');
-        this.authService.getPrincipal().subscribe( userCurrent => this.loggedInUser = userCurrent);
+        this.getCurrentUser();
     }
+
+    getCurrentUser() {
+        console.log("WelcomeComponent getCurrentUser")
+        if (localStorage.getItem('auth_token')) {
+            this.authService.getPrincipal()
+			.subscribe( 
+				(response) => {
+					this.currentUser = this.authService.currentUserValue;
+					console.log("response : " + JSON.stringify(response));
+				},((error: any) => {
+					console.log(error);
+					//return of("Datos no encontrados");
+				})
+		    );
+        }
+	}
 }

@@ -1,7 +1,7 @@
 {
-    "name": "auth-sheets-service",
+    "name": "auth-service",
     "version": "0.1.0",
-    "description": "Server de Autentificación",
+    "description": "GSI API demo",
     "repository": {
         "type": "git",
         "url": "https://github.com/EmitoSanti"
